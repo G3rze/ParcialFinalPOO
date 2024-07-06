@@ -6,4 +6,6 @@ module org.example.parcialfinalpoo {
 
     opens org.example.parcialfinalpoo to javafx.fxml;
     exports org.example.parcialfinalpoo;
+    exports org.example.parcialfinalpoo.DB;
+    opens org.example.parcialfinalpoo.DB to javafx.fxml;
 }
