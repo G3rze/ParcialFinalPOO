@@ -14,7 +14,7 @@ public class DBController {
     private DBController() {
         try {
             Credentials credentials = new Credentials();
-            setCon(con = DriverManager.getConnection("jdbc:mysql://localhost/TallerPoo", credentials.getUsername(),credentials.getPassword()));
+            setCon(con = DriverManager.getConnection("jdbc:mysql://localhost/ParcialFinal", credentials.getUsername(),credentials.getPassword()));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
