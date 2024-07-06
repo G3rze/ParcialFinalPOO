@@ -1,4 +1,4 @@
-package com.example.parcialfinalpoo.Clases;
+package org.example.parcialfinalpoo.Clases;
 
 import java.util.Date;
 
