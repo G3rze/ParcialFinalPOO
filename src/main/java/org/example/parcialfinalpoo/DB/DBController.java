@@ -10,92 +10,92 @@ import java.util.List;
 
 public class DBController {
 
-    private Connection con;
-    private PreparedStatement pStatement = null;
-    private Statement statement = null;
-    private static DBController DBInstance;
+    private Connection con; //00055623 Declara una variable privada 'con' de tipo Connection
+    private PreparedStatement pStatement = null; //00055623 Declara e inicializa una variable privada 'pStatement' de tipo PreparedStatement a null
+    private Statement statement = null; //00055623 Declara e inicializa una variable privada 'statement' de tipo Statement a null
+    private static DBController DBInstance; //00055623 Declara una variable estática 'DBInstance' de tipo DBController
 
-    private DBController() {
+    private DBController() { //00055623 Constructor privado de DBController
         try {
-            Credentials credentials = new Credentials();
-            setCon(con = DriverManager.getConnection("jdbc:mysql://localhost/ParcialFinal", credentials.getUsername(),credentials.getPassword()));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Credentials credentials = new Credentials(); //00055623 Crea una nueva instancia de la clase Credentials
+            setCon(con = DriverManager.getConnection("jdbc:mysql://localhost/ParcialFinal", credentials.getUsername(),credentials.getPassword())); //00055623 Establece una conexión a la base de datos usando las credenciales y la asigna a 'con'
+        } catch (SQLException e) { //00055623 Captura cualquier SQLException que ocurra durante la conexión a la base de datos
+            throw new RuntimeException(e); //00055623 Lanza una RuntimeException si se captura una SQLException
         }
     }
 
-    public static DBController getDBInstance() {
-        if(DBInstance == null){
-            DBInstance = new DBController();
+    public static DBController getDBInstance() { //00055623 Método para obtener la instancia única de DBController (Singleton)
+        if(DBInstance == null){ //00055623 Verifica si la instancia es null
+            DBInstance = new DBController(); //00055623 Crea una nueva instancia de DBController si es null
         }
-        return DBInstance;
+        return DBInstance; //00055623 Retorna la instancia de DBController
     }
 
-    private Connection getCon() {
-        return con;
+    private Connection getCon() { //00055623 Método privado para obtener la conexión
+        return con; //00055623 Retorna la conexión
     }
 
-    private void setCon(Connection con) {
-        this.con = con;
+    private void setCon(Connection con) { //00055623 'Método privado para establecer la conexión'
+        this.con = con; //00055623 Asigna la conexión pasada como argumento a la variable 'con'
     }
 
-    public PreparedStatement getpStatement() {
-        return pStatement;
+    public PreparedStatement getpStatement() { //00055623 Método público para obtener el PreparedStatement
+        return pStatement; //00055623 Retorna el PreparedStatement
     }
 
-    public void setpStatement(PreparedStatement pStatement) {
-        this.pStatement = pStatement;
+    public void setpStatement(PreparedStatement pStatement) { //00055623 Método público para establecer el PreparedStatement
+        this.pStatement = pStatement; //00055623 Asigna el PreparedStatement pasado como argumento a la variable 'pStatement'
     }
 
-    public Statement getStatement() {
-        return statement;
+    public Statement getStatement() { //00055623 Método público para obtener el Statement
+        return statement; //00055623 Retorna el Statement
     }
 
-    public void setStatement(Statement statement) {
-        this.statement = statement;
+    public void setStatement(Statement statement) { //00055623 Método público para establecer el Statement
+        this.statement = statement; //00055623 Asigna el Statement pasado como argumento a la variable 'statement'
     }
 
-    public List<Cliente> getClientes(){
-        List<Cliente> clientes = new ArrayList<>();
+    public List<Cliente> getClientes(){ //00055623 Método público para obtener una lista de clientes
+        List<Cliente> clientes = new ArrayList<>(); //00055623 Crea una nueva lista de clientes
 
 
         try {
-            ResultSet resultSet = getDBInstance().con.createStatement().executeQuery("select * from Cliente");
+            ResultSet resultSet = getDBInstance().con.createStatement().executeQuery("select * from Cliente");  //00055623 Ejecuta una consulta para obtener todos los clientes y guarda el resultado en un ResultSet
 
-            while (resultSet.next()){
-                clientes.add(new Cliente(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4)));
+            while (resultSet.next()){ //00055623 Itera sobre cada fila del ResultSet
+                clientes.add(new Cliente(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4))); //00055623 Añade un nuevo cliente a la lista con los datos del ResultSet
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) { //00055623 Captura cualquier SQLException que ocurra durante la consulta
+            throw new RuntimeException(e); //00055623 Lanza una RuntimeException si se captura una SQLException
         }
-        return clientes;
+        return clientes; //00055623 Retorna la lista de clientes
     }
 
-    public List<Tarjeta> getTarjetas (){
-        List<Tarjeta> tarjetas = new ArrayList<>();
+    public List<Tarjeta> getTarjetas (){ //00055623 Método público para obtener una lista de tarjetas
+        List<Tarjeta> tarjetas = new ArrayList<>(); //00055623 Crea una nueva lista de tarjetas
 
         try {
-            ResultSet resultSet = getDBInstance().con.createStatement().executeQuery("select * from Tarjeta");
+            ResultSet resultSet = getDBInstance().con.createStatement().executeQuery("select * from Tarjeta"); //00055623 Ejecuta una consulta para obtener todas las tarjetas y guarda el resultado en un ResultSet
 
-            List<Cliente> clientes = getClientes();
-            Cliente cliente = null;
+            List<Cliente> clientes = getClientes(); //00055623 Obtiene la lista de clientes
+            Cliente cliente = null; //00055623 Declara una variable 'cliente' de tipo Cliente y la inicializa a null
 
-            while (resultSet.next()){
-                for(Cliente c: clientes){
-                    if(c.getId() == resultSet.getInt("id_cliente")){
-                        cliente = c;
+            while (resultSet.next()){ //00055623 Itera sobre cada fila del ResultSet
+                for(Cliente c: clientes){ //00055623 Itera sobre cada cliente en la lista de clientes
+                    if(c.getId() == resultSet.getInt("id_cliente")){ //00055623 Si el ID del cliente coincide con el ID del cliente en el ResultSet
+                        cliente = c; //00055623 Asigna el cliente a la variable 'cliente'
                     }
                 }
-                tarjetas.add(new Tarjeta(resultSet.getInt("id"), resultSet.getString("numeroTarjeta"), resultSet.getDate("fechaExpiracion"), resultSet.getString("tipoTarjeta").charAt(0), resultSet.getString("facilitadorTarjeta"), cliente));
+                tarjetas.add(new Tarjeta(resultSet.getInt("id"), resultSet.getString("numeroTarjeta"), resultSet.getDate("fechaExpiracion"), resultSet.getString("tipoTarjeta").charAt(0), resultSet.getString("facilitadorTarjeta"), cliente)); //00055623 Añade una nueva tarjeta a la lista con los datos del ResultSet y el cliente asociado
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) { //00055623 Captura cualquier SQLException que ocurra durante la consulta
+            throw new RuntimeException(e); //00055623 Lanza una RuntimeException si se captura una SQLException
         }
 
 
-        return tarjetas;
+        return tarjetas; //00055623 Retorna la lista de tarjetas
     }
 
     public List<Compra> getCompras() {
