@@ -196,4 +196,112 @@ public class DBController {
         }
     }
 
+    public void deleteCliente(int id){ //00055623 funcion encargada de eliminar registros en la tabla Cliente
+
+        try {
+            statement = getDBInstance().con.createStatement(); //00055623 Obtiene un nuevo statement
+
+            statement.executeUpdate("delete from Cliente where id = " + id); //00055623 se manda la query a la base de datos
+
+            getCon().close(); //00055623 cierra la conección
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e); //00055623 devuelve un error del sql
+        }
+
+    }
+
+    public void deleteTarjeta(int id){ //00055623 funcion encargada de eliminar registros en la tabla Tarjeta
+        try {
+            statement = getDBInstance().con.createStatement(); //00055623 Obtiene un nuevo statement
+
+            statement.executeUpdate("delete from Tarjeta where id = " + id); //00055623 se manda la query a la base de datos
+
+            getCon().close(); //00055623 cierra la conección
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e); //00055623 devuelve un error del sql
+        }
+    }
+
+    public void deleteCompras(int id){ //00055623 funcion encargada de eliminar registros en la tabla Compras
+        try {
+            statement = getDBInstance().con.createStatement(); //00055623 Obtiene un nuevo statement
+
+            statement.executeUpdate("delete from Compra where id = " + id); //00055623 se manda la query a la base de datos
+
+            getCon().close(); //00055623 cierra la conección
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e); //00055623 devuelve un error del sql
+        }
+    }
+
+    public void updateCliente(int id, String name, String dir, String tel){
+        try {
+            pStatement = getDBInstance().con.prepareStatement("update Cliente set nombreCompleto = '?', direccion =  '?', telefono  = '?' where id = " + id);
+
+            pStatement.setString(1, name);
+            pStatement.setString(2, dir);
+            pStatement.setString(3, tel);
+
+            pStatement.execute();
+
+            getCon().close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void updateTarjeta(int id, String number, String expDate, Character type, String cardFacilitator, int idCliente){
+
+        List<Cliente> clientes = getClientes();
+
+        for (Cliente c: clientes) {
+            if (c.getId() == idCliente) {
+                try {
+                    pStatement = getDBInstance().con.prepareStatement("update Tarjeta set numeroTarjeta = '?', fechaExpiracion =  '?', tipoTarjeta  = '?', facilitadorTarjeta = '?', id_cliente = '?' where id = " + id);
+
+                    pStatement.setString(1, number);
+                    pStatement.setString(2, expDate);
+                    pStatement.setString(4, "" + type);
+                    pStatement.setString(5, cardFacilitator);
+                    pStatement.setString(6, String.valueOf(idCliente));
+
+                    pStatement.execute();
+
+                    getCon().close();
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+    public void updateCompra(int id, String buyDate, String total, String desc, int idTarjeta){
+        List<Tarjeta> tarjetas = getDBInstance().getTarjetas();
+
+        for (Tarjeta t: tarjetas){
+            if (t.getId() == idTarjeta){
+                try {
+                    pStatement = getDBInstance().con.prepareStatement("update Compra set fechaCompra = '?', montoTotal =  '?', descripcion  = '?', id_tarjeta = '?' where id = " + id);
+
+                    pStatement.setString(1, buyDate);
+                    pStatement.setString(2, total);
+                    pStatement.setString(4, desc);
+                    pStatement.setString(5, String.valueOf(idTarjeta));
+
+                    pStatement.execute();
+
+                    getCon().close();
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
 }
