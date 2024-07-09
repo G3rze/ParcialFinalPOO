@@ -195,30 +195,31 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void addTarjeta(ActionEvent event) {
+    void addTarjeta(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de agregar Tarjeta
 
-        for (Cliente c: clientes) {
+        for (Cliente c: clientes) { //00055623 Itera sobre la lista de clientes
 
-            if (c.getId() == Integer.parseInt(textClienteTarjeta.getText())) {
+            if (c.getId() == Integer.parseInt(textClienteTarjeta.getText())) { //00055623 Verifica si el ID del cliente coincide con el ID ingresado
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //00055623 Formato de fecha
 
                 try {
-                    Date date = format.parse(textExpDate.getText());
-                    Tarjeta tarjeta = new Tarjeta(-1, textNumTarjeta.getText(), date, getTipoTarjeta(), getFacilitadorTarjeta(), c);
+                    Date date = format.parse(textExpDate.getText()); //00055623 Parsea la fecha de vencimiento de la tarjeta
+                    Tarjeta tarjeta = new Tarjeta(-1, textNumTarjeta.getText(), date, getTipoTarjeta(), getFacilitadorTarjeta(), c); //00055623 Crea una nueva instancia de Tarjeta
 
-                    DBController.getDBInstance().insertTarjeta(tarjeta);
+                    DBController.getDBInstance().insertTarjeta(tarjeta); //00055623 Inserta la tarjeta en la base de datos
 
-                    tarjetas = DBController.getDBInstance().getTarjetas();
+                    tarjetas = DBController.getDBInstance().getTarjetas(); //00055623 Actualiza la lista de tarjetas
 
-                    textClienteTarjeta.clear();
-                    idTarjetaM.clear();
-                    textNumTarjeta.clear();
-                    textExpDate.clear();
-                    typeToggleGroup.selectToggle(null);
-                    facilitatorToggleGroup.selectToggle(null);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
+                    textClienteTarjeta.clear(); //00055623 Limpia el campo de texto para el ID del cliente
+                    idTarjetaM.clear(); //00055623 Limpia el campo de texto del ID de la tarjeta
+                    textNumTarjeta.clear(); //00055623 Limpia el campo de texto del número de tarjeta
+                    textExpDate.clear(); //00055623 Limpia el campo de texto de la fecha de expiración
+                    typeToggleGroup.selectToggle(null); //00055623 Desmarca el grupo de botones de tipo de tarjeta
+                    facilitatorToggleGroup.selectToggle(null); //00055623 Desmarca el grupo de botones de facilitador de tarjeta
+                } catch (ParseException e) { //00055623 Maneja la excepción de análisis de fecha
+                    throw new RuntimeException(e); //00055623 Lanza una excepción en caso de error
+
                 }
             }
         }
@@ -227,124 +228,124 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void createAReport(ActionEvent event) {
-        String content = "";
-        String title = "A-";
-        String idcompra=idClienteA.getText();
-        Date actual = new Date();
-        boolean exist = false;
+    void createAReport(ActionEvent event) { //00055623 Crea un reporte A cuando se acciona el botón generar
+        String content = ""; //00055623 Contenido del reporte
+        String title = "A-"; //00055623 Título del reporte
+        String idcompra=idClienteA.getText(); //00055623 Obtiene el ID del cliente
+        Date actual = new Date(); //00055623 Obtiene la fecha actual
+        boolean exist = false; //00055623 Verifica si existen compras en el rango de fechas
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss"); //00055623 Formato de fecha para el título del archivo
 
-        for(Compra compra: compras){
+        for(Compra compra: compras){ //00055623 Itera sobre la lista de compras
 
-            if(compra.getTarjeta().getCliente().getId()==Integer.parseInt(idcompra)){
-                if ( (compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechainicio))) && (compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechafinal)))){
-                    content = content + ("ID: " + compra.getId() + " Fecha: " + compra.getFechaCompra() + " Descripción " + compra.getDescripcion() + " Tarjeta: " + compra.getTarjeta().getNumeroTarjeta() + "\n");
-                    exist = true;
+            if(compra.getTarjeta().getCliente().getId()==Integer.parseInt(idcompra)){ //00055623 Verifica si el ID del cliente coincide
+                if ( (compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechainicio))) && (compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechafinal)))){ //00055623 Verifica si la compra está dentro del rango de fechas
+                    content = content + ("ID: " + compra.getId() + " Fecha: " + compra.getFechaCompra() + " Descripción " + compra.getDescripcion() + " Tarjeta: " + compra.getTarjeta().getNumeroTarjeta() + "\n"); //00055623 Añade información de la compra al contenido del reporte
+                    exist = true; //00055623 Marca que existe al menos una compra en el rango de fechas
                 }
             }
         }
-        if(exist){
-            title += format.format(actual) + ".txt";
-            fl.CreateFile(title, content);
+        if(exist){ //00055623 Si existen compras en el rango de fechas
+            title += format.format(actual) + ".txt"; //00055623 Formatea el título del archivo con la fecha y hora actual
+            fl.CreateFile(title, content); //00055623 Crea el archivo con el contenido del reporte
         }
     }
 
     @FXML
-    void createBReport(ActionEvent event) {
+    void createBReport(ActionEvent event) { //00055623 Crea un reporte B cuando se acciona el botón generar
 
-        String idCliente = idCLienteb.getText();
-        String content = "";
-        String title = "B-";
+        String idCliente = idCLienteb.getText(); //00055623 Obtiene el ID del cliente
+        String content = ""; //00055623 Contenido del reporte
+        String title = "B-"; //00055623 Título del reporte
 
-        float total = 0;
+        float total = 0; //00055623 Total de gastos
 
-        boolean exist = false;
+        boolean exist = false; //00055623 Verifica si existen compras en el mes
 
-        Date actual = new Date();
-        Date cDate;
+        Date actual = new Date(); //00055623 Obtiene la fecha actual
+        Date cDate; //00055623 Fecha del reporte
 
-        SimpleDateFormat format = new SimpleDateFormat("MM-yyyy");
-        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
-        SimpleDateFormat contentFortmat = new SimpleDateFormat("MMMM-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM-yyyy"); //00055623 Formato de mes y año
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss"); //00055623 Formato de fecha y hora para el título del archivo
+        SimpleDateFormat contentFortmat = new SimpleDateFormat("MMMM-yyyy"); //00055623 Formato de mes y año para el contenido del reporte
 
         try {
-            cDate = format.parse(String.valueOf(comboMes.getValue()) + "-" + textAnio.getText());
-            String cDateString = format.format(cDate);
-            for (Compra c: compras){
+            cDate = format.parse(String.valueOf(comboMes.getValue()) + "-" + textAnio.getText()); //00055623 Parsea la fecha seleccionada
+            String cDateString = format.format(cDate); //00055623 Formatea la fecha seleccionada
+            for (Compra c: compras){ //00055623 Itera sobre la lista de compras
 
-                String cTableDate = format.format(c.getFechaCompra());
+                String cTableDate = format.format(c.getFechaCompra()); //00055623 Formatea la fecha de la compra
 
-                if((c.getTarjeta().getCliente().getId() == Integer.parseInt(idCliente)) && cDateString.equals(cTableDate) ){
-                    exist = true;
-                    total += (float) c.getMontoTotal();
+                if((c.getTarjeta().getCliente().getId() == Integer.parseInt(idCliente)) && cDateString.equals(cTableDate) ){ //00055623 Verifica si la compra corresponde al cliente y al mes seleccionado
+                    exist = true; //00055623 Marca que existe al menos una compra en el mes
+                    total += (float) c.getMontoTotal(); //00055623 Suma el monto total de la compra al total
                 }
             }
-            if(exist){
-                for (Cliente c: clientes) {
-                    if (c.getId() == Integer.parseInt(idCliente) ) {
-                        title += titleFormat.format(actual) + ".txt";
-                        content += "El cliente " + c.getNombreCompleto() + " ha gastado $" + total + " durante el mes de " + contentFortmat.format(cDate);
-                        fl.CreateFile(title,content);
+            if(exist){ //00055623 Si existen compras en el mes
+                for (Cliente c: clientes) { //00055623 Itera sobre la lista de clientes
+                    if (c.getId() == Integer.parseInt(idCliente) ) { //00055623 Verifica si el ID del cliente coincide
+                        title += titleFormat.format(actual) + ".txt"; //00055623 Formatea el título del archivo con la fecha y hora actual
+                        content += "El cliente " + c.getNombreCompleto() + " ha gastado $" + total + " durante el mes de " + contentFortmat.format(cDate); //00055623 Añade información del gasto del cliente al contenido del report
+                        fl.CreateFile(title,content); //00055623 Crea el archivo con el contenido del reporte
                     }
                 }
             }
 
 
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+        } catch (ParseException e) { //00055623 Maneja la excepción de análisis de fecha
+            throw new RuntimeException(e); //00055623 Lanza una excepción en caso de error
         }
 
 
     }
 
     @FXML
-    void createCReport(ActionEvent event) {
+    void createCReport(ActionEvent event) { //00055623 Crea un reporte C cuando se acciona el botón generar
 
-        String header1 = "Tarjetas de crédito:";
-        String header2 = "Tarjetas de Débito:";
-        String notFound = "N/A";
-        String censored = "XXXX XXXX XXXX ";
-        String creditContent = "";
-        String debitContent = "";
-        String content = "";
-        String title = "C-";
+        String header1 = "Tarjetas de crédito:"; //00055623 Encabezado para tarjetas de crédito
+        String header2 = "Tarjetas de Débito:"; //00055623 Encabezado para tarjetas de débito
+        String notFound = "\t" + "N/A"; //00055623 Texto para tarjetas no encontradas
+        String censored = "XXXX XXXX XXXX "; //00055623 Texto para censurar números de tarjeta
+        String creditContent = ""; //00055623 Contenido del reporte de tarjetas de crédito
+        String debitContent = ""; //00055623 Contenido del reporte de tarjetas de débito
+        String content = ""; //00055623 Contenido del reporte
+        String title = "C-"; //00055623 Título del reporte
 
-        boolean dExist = false;
-        boolean cExist = false;
+        boolean dExist = false; //00055623 Verifica si existen tarjetas de débito
+        boolean cExist = false; //00055623 Verifica si existen tarjetas de crédito
 
-        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss"); //00055623 Formato de fecha y hora para el título del archivo
 
-        int idCliente = Integer.parseInt(idClienteC.getText());
+        int idCliente = Integer.parseInt(idClienteC.getText()); //00055623 Obtiene el ID del cliente
 
-        for (Tarjeta t: tarjetas){
-            if(t.getCliente().getId() == idCliente){
-                if(t.getTipoTarjeta() == 'C'){
-                    creditContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
-                    cExist = true;
-                } else if (t.getTipoTarjeta() == 'D'){
-                    debitContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
-                    dExist = true;
+        for (Tarjeta t: tarjetas){ //00055623 Itera sobre la lista de tarjetas
+            if(t.getCliente().getId() == idCliente){ //00055623 Verifica si la tarjeta pertenece al cliente
+                if(t.getTipoTarjeta() == 'C'){ //00055623 Verifica si la tarjeta es de crédito
+                    creditContent += "\t" + censored + getLastDigits(t.getNumeroTarjeta()) + "\n"; //00055623 Añade la tarjeta de crédito al contenido del reporte
+                    cExist = true; //00055623 Marca que existe al menos una tarjeta de crédito
+                } else if (t.getTipoTarjeta() == 'D'){ //00055623 Verifica si la tarjeta es de débito
+                    debitContent += "\t" + censored + getLastDigits(t.getNumeroTarjeta()) + "\n"; //00055623 Añade la tarjeta de débito al contenido del reporte
+                    dExist = true; //00055623 Marca que existe al menos una tarjeta de débito
                 }
             }
         }
 
-        if(cExist){
-            content += header1 + "\n" + creditContent + "\n";
+        if(cExist){ //00055623 Si existen tarjetas de crédito
+            content += header1 + "\n" + creditContent + "\n"; //00055623 Añade el encabezado y el contenido de tarjetas de crédito al reporte
         } else {
-            content += header1 + "\n" + notFound + "\n";
+            content += header1 + "\n" + notFound + "\n"; //00055623 Añade el encabezado y la indicación de no encontrado al reporte
         }
 
-        if(dExist){
-            content += header2 + "\n" + debitContent + "\n";
+        if(dExist){ //00055623 Si existen tarjetas de débito
+            content += header2 + "\n" + debitContent + "\n"; //00055623 Añade el encabezado y el contenido de tarjetas de débito al reporte
         } else {
-            content += header2 + "\n" + notFound + "\n";
+            content += header2 + "\n" + notFound + "\n"; //00055623 Añade el encabezado y la indicación de no encontrado al reporte
         }
 
-        title += titleFormat.format(new Date())  + ".txt";
+        title += titleFormat.format(new Date())  + ".txt"; //00055623 Formatea el título del archivo con la fecha y hora actual
 
-        fl.CreateFile(title, content);
+        fl.CreateFile(title, content); //00055623 Crea el archivo con el contenido del reporte
 
     }
 
@@ -356,90 +357,90 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void deleteCliente(ActionEvent event) {
+    void deleteCliente(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de borrar Cliente
 
         try {
 
-            String clienteID = String.valueOf(textIdCliente.getText());
+            String clienteID = String.valueOf(textIdCliente.getText()); //00055623 Obtiene el ID del cliente
 
-            if (clienteID.isEmpty()){
-                System.out.println("Tiene que digitar un ID para buscar el cliente que se busca");
+            if (clienteID.isEmpty()){ //00055623 Verifica si el campo de ID del cliente está vacío
+                System.out.println("Tiene que digitar un ID para buscar el cliente que se busca"); //00055623 Imprime un mensaje si el campo está vacío
             }
 
-            for (Cliente cliente: clientes){
+            for (Cliente cliente: clientes){ //00055623 Itera sobre la lista de clientes
 
-                if (cliente.getId() == Integer.parseInt(textIdCliente.getText())){
+                if (cliente.getId() == Integer.parseInt(textIdCliente.getText())){ //00055623 Verifica si el ID del cliente coincide
 
-                    DBController.getDBInstance().deleteCliente(Integer.parseInt(clienteID));
-                    clientes = DBController.getDBInstance().getClientes();
-                    textIdCliente.clear();
+                    DBController.getDBInstance().deleteCliente(Integer.parseInt(clienteID)); //00055623 Elimina el cliente de la base d
+                    clientes = DBController.getDBInstance().getClientes(); //00055623 Actualiza la lista de clientes
+                    textIdCliente.clear(); //00055623 Limpia el campo de texto del ID del cliente
                 }
 
             }
 
-        }catch (Exception e){
+        }catch (Exception e){ //00055623 Maneja cualquier excepción
 
-            System.out.println(e);
+            System.out.println(e); //00055623 Imprime la excepción
 
         }
 
     }
 
     @FXML
-    void deleteCompra(ActionEvent event) {
+    void deleteCompra(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de borrar Compra
 
         try {
 
-            String compraID = String.valueOf(textIdCompra.getText());
+            String compraID = String.valueOf(textIdCompra.getText()); //00055623 Obtiene el ID de la compra
 
-            if (compraID.isEmpty()){
-                System.out.println("Tiene que digitar un ID para encontrar la compra que se busca");
+            if (compraID.isEmpty()){ //00055623 Verifica si el campo de ID de la compra está vacío
+                System.out.println("Tiene que digitar un ID para encontrar la compra que se busca"); //00055623 Imprime un mensaje si el campo está vacío
             }
 
-            for (Compra compra: compras){
+            for (Compra compra: compras){ //00055623 Itera sobre la lista de compras
 
-                if (compra.getId() == Integer.parseInt(textIdCompra.getText())){
+                if (compra.getId() == Integer.parseInt(textIdCompra.getText())){ //00055623 Verifica si el ID de la compra coincide
 
-                    DBController.getDBInstance().deleteCompras(Integer.parseInt(compraID));
-                    compras = DBController.getDBInstance().getCompras();
-                    textIdCompra.clear();
+                    DBController.getDBInstance().deleteCompras(Integer.parseInt(compraID)); //00055623 Elimina la compra de la base de datos
+                    compras = DBController.getDBInstance().getCompras(); //00055623 Actualiza la lista de compras
+                    textIdCompra.clear(); //00055623 Limpia el campo de texto del ID de la compra
                 }
 
             }
 
-        }catch (Exception e){
+        }catch (Exception e){ //00055623 Maneja cualquier excepción
 
-            System.out.println(e);
+            System.out.println(e); //00055623 Imprime la excepción
 
         }
 
     }
 
     @FXML
-    void deleteTarjeta(ActionEvent event) {
+    void deleteTarjeta(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de borrar Tarjeta
 
         try {
 
-            String tarjetaID = String.valueOf(textIdTarjeta.getText());
+            String tarjetaID = String.valueOf(textIdTarjeta.getText()); //00055623 Obtiene el ID de la tarjeta
 
-            if (tarjetaID.isEmpty()){
-                System.out.println("Tiene que digitar un ID para encontrar la tarjeta que se busca");
+            if (tarjetaID.isEmpty()){ //00055623 Verifica si el campo de ID de la tarjeta está vacío
+                System.out.println("Tiene que digitar un ID para encontrar la tarjeta que se busca"); //00055623 Imprime un mensaje si el campo está vacío
             }
 
-            for (Tarjeta tarjeta: tarjetas){
+            for (Tarjeta tarjeta: tarjetas){ //00055623 Itera sobre la lista de tarjetas
 
-                if (tarjeta.getId() == Integer.parseInt(textIdTarjeta.getText())){
+                if (tarjeta.getId() == Integer.parseInt(textIdTarjeta.getText())){ //00055623 Verifica si el ID de la tarjeta coincide
 
-                    DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
-                    tarjetas = DBController.getDBInstance().getTarjetas();
-                    textIdTarjeta.clear();
+                    DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID)); //00055623 Elimina la tarjeta de la base de datos
+                    tarjetas = DBController.getDBInstance().getTarjetas(); //00055623 Actualiza la lista de tarjetas
+                    textIdTarjeta.clear(); //00055623 Limpia el campo de texto del ID de la tarjeta
                 }
 
             }
 
-        }catch (Exception e){
+        }catch (Exception e){ //00055623 Maneja cualquier excepción
 
-            System.out.println(e);
+            System.out.println(e); //00055623 Imprime la excepción
 
         }
 
