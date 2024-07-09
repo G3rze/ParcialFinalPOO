@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.parcialfinalpoo.HelloController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.parcialfinalpoo.HelloController">
   <tabs>
     <Tab text="Clientes">
       <content>
@@ -28,7 +21,7 @@
                   <TextField fx:id="textTel" layoutX="164.0" layoutY="62.0" />
                   <TextField fx:id="textIdCliente" layoutX="115.0" layoutY="196.0" />
                   <TextField fx:id="idClienteM" layoutX="391.0" layoutY="62.0" prefHeight="25.0" prefWidth="147.0" promptText="(En caso de modificiar)" />
-                  <Label layoutX="326.0" layoutY="66.0" text="Id:" />
+                  <Label layoutX="366.0" layoutY="66.0" text="Id:" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -56,7 +49,7 @@
                   <RadioButton fx:id="radioAmerican" layoutX="376.0" layoutY="140.0" mnemonicParsing="false" text="American Express" />
                   <Button fx:id="buttonChangeCliente1" layoutX="287.0" layoutY="198.0" mnemonicParsing="false" text="Cambiar info Cliente" />
                   <TextField fx:id="idTarjetaM" layoutX="287.0" layoutY="198.0" prefHeight="25.0" prefWidth="147.0" promptText="(En caso de modificiar)" />
-                  <Label layoutX="230.0" layoutY="202.0" text="Id Tarjeta:" />
+                  <Label layoutX="220.0" layoutY="202.0" text="Id Tarjeta:" />
                </children></AnchorPane>
       </content>
     </Tab>

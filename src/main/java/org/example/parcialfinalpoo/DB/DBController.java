@@ -5,8 +5,10 @@ import org.example.parcialfinalpoo.Clases.Compra;
 import org.example.parcialfinalpoo.Clases.Tarjeta;
 
 import java.sql.*;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class DBController {
 
@@ -159,7 +161,7 @@ public class DBController {
             pStatement = getDBInstance().con.prepareStatement("insert into Tarjeta(numeroTarjeta, fechaExpiracion, tipoTarjeta, facilitadorTarjeta, id_cliente) values(?,?,?,?,?)"); //00073123 - Prepara una consulta de insert para colocar los valores de los campos según los datos dados
 
             pStatement.setString(1, tarjeta.getNumeroTarjeta()); //00073123 - Asigna el valor del número de la tarjeta en el primer "?"
-            pStatement.setString(2, tarjeta.getFechaExpiracion().toString()); //00073123 - Asigna el valor de la fecha de expiración en el segundo "?"
+            pStatement.setString(2, DateConverter(tarjeta.getFechaExpiracion())); //00073123 - Asigna el valor de la fecha de expiración en el segundo "?"
             pStatement.setString(3, "" + tarjeta.getTipoTarjeta()); //00073123 - Asigna el valor del tipo de la tarjeta en el tercer "?"
             pStatement.setString(4, tarjeta.getFacilitadorTarjeta()); //00073123 - Asigna el valor del facilitador de la tarjeta en el cuarto "?"
             pStatement.setString(5, String.valueOf(tarjeta.getCliente().getId())); //00073123 - Asigna el valor del id del cliente en el quinto "?"
@@ -181,7 +183,7 @@ public class DBController {
 
             pStatement = getDBInstance().con.prepareStatement("insert into Compra(fechaCompra, montoTotal, descripcion, id_tarjeta) values(?,?,?,?)"); //00073123 - Prepara una consulta de insert para colocar los valores de los campos según los datos dados
 
-            pStatement.setString(1, compra.getFechaCompra().toString()); //00073123 - Asigna el valor de la fecha de la compra en el primer "?"
+            pStatement.setString(1, DateConverter(compra.getFechaCompra())); //00073123 - Asigna el valor de la fecha de la compra en el primer "?"
             pStatement.setString(2, String.valueOf(compra.getMontoTotal())); //00073123 - Asigna el valor del monto total de la compra en el segundo "?"
             pStatement.setString(3, compra.getDescripcion()); //00073123 - Asigna el valor de la descripción de la compra en el tercer "?"
             pStatement.setString(4, String.valueOf(compra.getTarjeta().getId())); //00073123 - Asigna el valor del id de la tarjeta en el cuarto "?"
@@ -237,71 +239,77 @@ public class DBController {
         }
     }
 
-    public void updateCliente(int id, String name, String dir, String tel){
+    public void updateCliente(int id, String name, String dir, String tel){ //00026223 funcion que cambia valores ya establecidos en la tabla cliente
         try {
-            pStatement = getDBInstance().con.prepareStatement("update Cliente set nombreCompleto = '?', direccion =  '?', telefono  = '?' where id = " + id);
+            pStatement = getDBInstance().con.prepareStatement("update Cliente set nombreCompleto = '?', direccion =  '?', telefono  = '?' where id = " + id); //00026223 se selecciona el campo a modificar
 
-            pStatement.setString(1, name);
-            pStatement.setString(2, dir);
-            pStatement.setString(3, tel);
+            pStatement.setString(1, name); //00026223 se manda un nuevo nombre del cliente
+            pStatement.setString(2, dir); //00026223 se manda una nueva direccion
+            pStatement.setString(3, tel); //00026223 se manda el telefono nuevo
 
-            pStatement.execute();
+            pStatement.execute(); //00026223 se ejecuta el cambio en la tabla
 
-            getCon().close();
+            getCon().close(); //00026223 se cierra la conexion a la base de datos para ahorrar recursos
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) { //00026223 esto va a correr si no se pudo conectar a la base de datos
+            throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
         }
     }
 
-    public void updateTarjeta(int id, String number, String expDate, Character type, String cardFacilitator, int idCliente){
+    public void updateTarjeta(int id, String number, String expDate, Character type, String cardFacilitator, int idCliente){ //00026223 funcion que cambia valores ya establecidos en la tabla tarjeta
 
-        List<Cliente> clientes = getClientes();
+        List<Cliente> clientes = getClientes(); //00026223 se crea una lista de clientes
 
-        for (Cliente c: clientes) {
-            if (c.getId() == idCliente) {
+        for (Cliente c: clientes) { // 00026223 se recorre la tabla de clientes
+            if (c.getId() == idCliente) { //00026223 se seleccionan los campos que el id de los clientes sea igual a idCliente en la tabla
                 try {
-                    pStatement = getDBInstance().con.prepareStatement("update Tarjeta set numeroTarjeta = '?', fechaExpiracion =  '?', tipoTarjeta  = '?', facilitadorTarjeta = '?', id_cliente = '?' where id = " + id);
+                    pStatement = getDBInstance().con.prepareStatement("update Tarjeta set numeroTarjeta = '?', fechaExpiracion =  '?', tipoTarjeta  = '?', facilitadorTarjeta = '?', id_cliente = '?' where id = " + id); //00026223 se selecciona el campo a modificar
 
-                    pStatement.setString(1, number);
-                    pStatement.setString(2, expDate);
-                    pStatement.setString(4, "" + type);
-                    pStatement.setString(5, cardFacilitator);
-                    pStatement.setString(6, String.valueOf(idCliente));
+                    pStatement.setString(1, number); //00026223 se manda el numero de la tarjeta a modificar
+                    pStatement.setString(2, expDate); //00026223 se manda la fecha de vencimiento de la tarjeta a modificar
+                    pStatement.setString(4, "" + type); //00026223 se guarda el tipo de la tarjeta
+                    pStatement.setString(5, cardFacilitator); //00026223  se manda el facilitador de la tarjeta
+                    pStatement.setString(6, String.valueOf(idCliente)); //00026223  se manda el id del cliente para la tarjeta
 
-                    pStatement.execute();
+                    pStatement.execute(); //00026223  se corre el modificador de campos en la tabla
 
-                    getCon().close();
+                    getCon().close(); //00026223 se cierra la base de datos para ahorrar recursos
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException e) {  //00026223 esto va a correr si no se pudo conectar a la base de datos
+                    throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
                 }
             }
         }
     }
 
-    public void updateCompra(int id, String buyDate, String total, String desc, int idTarjeta){
-        List<Tarjeta> tarjetas = getDBInstance().getTarjetas();
+    public void updateCompra(int id, String buyDate, String total, String desc, int idTarjeta){ //00026223 funcion que cambia valores ya establecidos en la tabla compras
+        List<Tarjeta> tarjetas = getDBInstance().getTarjetas(); //00026223 se crea una lista de tarjetas
 
-        for (Tarjeta t: tarjetas){
-            if (t.getId() == idTarjeta){
+        for (Tarjeta t: tarjetas){ //00026223 se recorre toda la tabla de tarjetas
+            if (t.getId() == idTarjeta){ //00026223 se comparan los idTarjeta con el id de las tarjetas en su propia tabla
                 try {
-                    pStatement = getDBInstance().con.prepareStatement("update Compra set fechaCompra = '?', montoTotal =  '?', descripcion  = '?', id_tarjeta = '?' where id = " + id);
+                    pStatement = getDBInstance().con.prepareStatement("update Compra set fechaCompra = '?', montoTotal =  '?', descripcion  = '?', id_tarjeta = '?' where id = " + id); //00026223 se selecciona el campo a modificar
 
-                    pStatement.setString(1, buyDate);
-                    pStatement.setString(2, total);
-                    pStatement.setString(4, desc);
-                    pStatement.setString(5, String.valueOf(idTarjeta));
+                    pStatement.setString(1, buyDate); //00026223 se manda la fecha de compra a modificar
+                    pStatement.setString(2, total); //00026223 se manda el total de la compra que se va a modificar
+                    pStatement.setString(4, desc); //00026223 se guarda el descuento a modificar
+                    pStatement.setString(5, String.valueOf(idTarjeta)); //00026223
 
-                    pStatement.execute();
+                    pStatement.execute(); //00026223 se ejecuta el cambio en la tabla
 
-                    getCon().close();
+                    getCon().close(); //00026223 se cierra la base de datos para ahorrar recursos
 
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } catch (SQLException e) { //00026223 esto va a correr si no se pudo conectar a la base de datos
+                    throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
                 }
             }
         }
+    }
+
+
+    public String DateConverter(Date fecha){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        return formatter.format(fecha);
     }
 
 }
