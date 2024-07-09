@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import org.example.parcialfinalpoo.Clases.Cliente;
 import org.example.parcialfinalpoo.Clases.Compra;
 import org.example.parcialfinalpoo.Clases.Tarjeta;
@@ -12,7 +11,6 @@ import org.example.parcialfinalpoo.DB.DBController;
 import org.example.parcialfinalpoo.filesystem.FileSystem;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -21,112 +19,112 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class HelloController implements Initializable { //00073123 - Controlador de la parte gráfica que implemente una interfaz para inicializar procesos
 
-    private List<Compra> compras;
+    private List<Compra> compras; //00073123 - Lista "compras" que almacena objetos de tipo Compra
 
-    private List<Tarjeta> tarjetas;
+    private List<Tarjeta> tarjetas; //00073123 - Lista "tarjetas" que almacena objetos de tipo Tarjeta
 
-    private List<Cliente> clientes;
+    private List<Cliente> clientes; //00073123 - Lista "clientes" que almacena objetos de tipo Cliente
 
-    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12};
+    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12}; //00073123 - Arreglo tipo Integer que almacena los valores de los meses
 
-    private final String[] facilitadores = {"visa", "MasterCard", "American Express"};
+    private final String[] facilitadores = {"visa", "MasterCard", "American Express"}; //00073123 - Arreglo tipo String que almacena los valores de los faciltiadores de la tarjeta
 
-    private final FileSystem fl = new FileSystem();
+    private final FileSystem fl = new FileSystem(); //00073123 - Crea una instancia de tipo FileSystem
 
-    @FXML
-    private DatePicker Fechafinal;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private DatePicker Fechafinal; //00073123 - Variable utilizada para seleccionar la fecha final en el reporte A
 
-    @FXML
-    private DatePicker Fechainicio;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private DatePicker Fechainicio; //00073123 - Variable utilizada para seleccionar la fecha de inicio en el reporte A
 
-    @FXML
-    private ComboBox<String> comboFacilitadorTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ComboBox<String> comboFacilitadorTarjeta; //00073123 - Variable utilizada para almacenar todos los tipos de facilitadores de tarjeta en el reporte D
 
-    @FXML
-    private ComboBox<Integer> comboMes;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ComboBox<Integer> comboMes; //00073123 - Variable utilizada para almacenar todos los meses en el reporte B
 
-    @FXML
-    private TextField idCLienteb;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idCLienteb; //00073123 - Variable en donde se coloca el ID del cliente para eliminarlo en el reporte A
 
-    @FXML
-    private TextField idClienteA;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteA; //00073123 - Variable en donde se coloca el ID del cliente para listar las compras que realizó en el reporte A
 
-    @FXML
-    private TextField idClienteC;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteC; //00073123 - Variable en donde se coloca el ID del cliente para listar las tarjetas que tiene en el reporte C
 
-    @FXML
-    private TextField idClienteM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteM; //00073123 - Variable en donde se coloca el ID del cliente para modificar la información del mismo
 
-    @FXML
-    private TextField idCompraM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idCompraM; //00073123 - Variable en donde se coloca el ID de la compra para modificar la información de la compra
 
-    @FXML
-    private TextField idTarjetaM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idTarjetaM; //00073123 - Variable en donde se coloca el ID de la tarjeta para modificar la información de la misma
 
-    @FXML
-    private RadioButton radioAmerican;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioAmerican; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a American Express
 
-    @FXML
-    private RadioButton radioMasterCard;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioMasterCard; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a Master Card
 
-    @FXML
-    private RadioButton radioTipoCredito;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioTipoCredito; //00073123 - Variable para almacenar el botón del tipo de la tarjeta correspondiente a Crédito
 
-    @FXML
-    private RadioButton radioTipoDebito;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioTipoDebito; //00073123 - Variable para almacenar el botón del tipo de la tarjeta correspondiente a Débito
 
-    @FXML
-    private RadioButton radioVisa;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioVisa; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a Visa
 
-    @FXML
-    private TextField textAnio;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textAnio; //00073123 - Variable para colocar el año en el reporte B para imprimir el dinero gastado por un cliente
 
-    @FXML
-    private TextField textClienteTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textClienteTarjeta; //00073123 - Variable para colocar el ID del cliente en la información de la tarjeta para añadirla
 
-    @FXML
-    private TextField textDescripcionCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textDescripcionCompra; //00073123 - Variable para almacenar la descripción de la compra
 
-    @FXML
-    private TextField textDireccion;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textDireccion; //00073123 - Variable para almacenar la dirección del cliente
 
-    @FXML
-    private TextField textExpDate;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textExpDate; //00073123 - Variable para almacenar la fecha de expiración de la tarjeta
 
-    @FXML
-    private TextField textFechaCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textFechaCompra; //00073123 - Variable para almacenar la fecha de la compra
 
-    @FXML
-    private TextField textIdCliente;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdCliente; //00073123 - Variable para almacenar el ID del cliente a la hora de eliminarlo
 
-    @FXML
-    private TextField textIdCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdCompra; //00073123 - Variable para almacenar el ID de la compra a la hora de eliminarla
 
-    @FXML
-    private TextField textIdTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdTarjeta; //00073123 - Variable para almacenar el ID de la tarjeta a la hora de eliminarla
 
-    @FXML
-    private TextField textMontoCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textMontoCompra; //00073123 - Variable para almacenar el monto de la compra
 
-    @FXML
-    private TextField textNombreCliente;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textNombreCliente; //00073123 - Variable para almacenar el nombre del cliente
 
-    @FXML
-    private TextField textNumTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textNumTarjeta; //00073123 - Variabla para almacenar el numero de la tarjeta
 
-    @FXML
-    private TextField textTarjetaCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textTarjetaCompra; //00073123 - Variable para almacenar el tipo de tarjeta con la que se realiza la compra
 
-    @FXML
-    private TextField textTel;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textTel; //00073123 - Variable para almacenar el telefono del cliente
 
-    @FXML
-    private ToggleGroup typeToggleGroup;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ToggleGroup typeToggleGroup; //00073123 - Selecciona los raddio button que permiten escoger el tipo de la tarjeta
 
-    @FXML
-    private ToggleGroup facilitatorToggleGroup;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ToggleGroup facilitatorToggleGroup; //00073123 - Selecciona los raddio button que permiten escoger el facilitador de la tarjeta
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
