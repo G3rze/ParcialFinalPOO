@@ -115,7 +115,7 @@ public class DBController {
 
                 for(Tarjeta c: tarjetas){ //00073123 - Bucle for que itera en cada línea
 
-                    if(c.getId() == resultSet.getInt("id_cliente")){ //00073123 - Verifica si el ID de la tarjeta coincide con el ID del cliente en el ResultSet
+                    if(c.getId() == resultSet.getInt("id_tarjeta")){ //00073123 - Verifica si el ID de la tarjeta coincide con el ID de la tarjeta en el ResultSet
 
                         tarjeta = c; //00073123 - Asigna la Tarjeta a la variable tarjeta
                     }
@@ -241,7 +241,7 @@ public class DBController {
 
     public void updateCliente(int id, String name, String dir, String tel){ //00026223 funcion que cambia valores ya establecidos en la tabla cliente
         try {
-            pStatement = getDBInstance().con.prepareStatement("update Cliente set nombreCompleto = '?', direccion =  '?', telefono  = '?' where id = " + id); //00026223 se selecciona el campo a modificar
+            pStatement = getDBInstance().con.prepareStatement("update Cliente set nombreCompleto = ?, direccion =  ?, telefono  = ? where id = " + id); //00026223 se selecciona el campo a modificar
 
             pStatement.setString(1, name); //00026223 se manda un nuevo nombre del cliente
             pStatement.setString(2, dir); //00026223 se manda una nueva direccion
@@ -263,17 +263,18 @@ public class DBController {
         for (Cliente c: clientes) { // 00026223 se recorre la tabla de clientes
             if (c.getId() == idCliente) { //00026223 se seleccionan los campos que el id de los clientes sea igual a idCliente en la tabla
                 try {
-                    pStatement = getDBInstance().con.prepareStatement("update Tarjeta set numeroTarjeta = '?', fechaExpiracion =  '?', tipoTarjeta  = '?', facilitadorTarjeta = '?', id_cliente = '?' where id = " + id); //00026223 se selecciona el campo a modificar
+                    pStatement = getDBInstance().con.prepareStatement("update Tarjeta set numeroTarjeta = ?, fechaExpiracion =  ?, tipoTarjeta  = ?, facilitadorTarjeta = ?, id_cliente = ? where id = " + id); //00026223 se selecciona el campo a modificar
 
-                    pStatement.setString(1, number); //00026223 se manda el numero de la tarjeta a modificar
-                    pStatement.setString(2, expDate); //00026223 se manda la fecha de vencimiento de la tarjeta a modificar
-                    pStatement.setString(4, "" + type); //00026223 se guarda el tipo de la tarjeta
-                    pStatement.setString(5, cardFacilitator); //00026223  se manda el facilitador de la tarjeta
-                    pStatement.setString(6, String.valueOf(idCliente)); //00026223  se manda el id del cliente para la tarjeta
+                    pStatement.setString(1,  number); //00026223 se manda el numero de la tarjeta a modificar
+                    pStatement.setString(2,  expDate); //00026223 se manda la fecha de vencimiento de la tarjeta a modificar
+                    pStatement.setString(3, ""+type); //00026223 se guarda el tipo de la tarjeta
+                    pStatement.setString(4, cardFacilitator); //00026223  se manda el facilitador de la tarjeta
+                    pStatement.setString(5, String.valueOf(idCliente)); //00026223  se manda el id del cliente para la tarjeta
 
                     pStatement.execute(); //00026223  se corre el modificador de campos en la tabla
 
                     Close(); //00026223 se cierra la base de datos para ahorrar recursos
+
 
                 } catch (SQLException e) {  //00026223 esto va a correr si no se pudo conectar a la base de datos
                     throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
@@ -288,12 +289,12 @@ public class DBController {
         for (Tarjeta t: tarjetas){ //00026223 se recorre toda la tabla de tarjetas
             if (t.getId() == idTarjeta){ //00026223 se comparan los idTarjeta con el id de las tarjetas en su propia tabla
                 try {
-                    pStatement = getDBInstance().con.prepareStatement("update Compra set fechaCompra = '?', montoTotal =  '?', descripcion  = '?', id_tarjeta = '?' where id = " + id); //00026223 se selecciona el campo a modificar
+                    pStatement = getDBInstance().con.prepareStatement("update Compra set fechaCompra = ?, montoTotal =  ?, descripcion  = ?, id_tarjeta = ? where id = " + id); //00026223 se selecciona el campo a modificar
 
                     pStatement.setString(1, buyDate); //00026223 se manda la fecha de compra a modificar
                     pStatement.setString(2, total); //00026223 se manda el total de la compra que se va a modificar
-                    pStatement.setString(4, desc); //00026223 se guarda el descuento a modificar
-                    pStatement.setString(5, String.valueOf(idTarjeta)); //00026223
+                    pStatement.setString(3, desc); //00026223 se guarda el descuento a modificar
+                    pStatement.setString(4, String.valueOf(idTarjeta)); //00026223
 
                     pStatement.execute(); //00026223 se ejecuta el cambio en la tabla
 
