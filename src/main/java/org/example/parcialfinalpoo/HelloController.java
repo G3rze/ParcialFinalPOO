@@ -350,17 +350,44 @@ public class HelloController implements Initializable { //00073123 - Controlador
     @FXML
     void createDReport(ActionEvent event) {
         double totalcompras=0;
+
+        Date actual = new Date();
+
         int cantidadcompras=0;
 
+        String cliente ="";
+        String tittle = "D-";
+        String content= "";
 
-        for (Compra compra: compras){
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
 
-            if (compra.getTarjeta().getFacilitadorTarjeta()==comboFacilitadorTarjeta.getValue()){
+        boolean exist = false;
 
-                System.out.println(" Cliente: "+compra.getTarjeta().getCliente());
-                totalcompras=totalcompras+compra.getMontoTotal();
-                cantidadcompras++;
+        for (Cliente c: clientes){
+
+            for (Tarjeta t: tarjetas){
+
+                if (c==t.getCliente()){
+
+                    if (t.getFacilitadorTarjeta()==getFacilitador(comboFacilitadorTarjeta.getValue())){
+
+                        for (Compra compra: compras){
+                            totalcompras+=compra.getMontoTotal();
+                            cantidadcompras++;
+                        }
+                        content=content+(" Cliente :"+c.getNombreCompleto()+" Total gastado: $"+totalcompras+" cantidad de compras realizadas: "+cantidadcompras+"\n");
+                        exist=true;
+                    }
+                }
             }
+            totalcompras=0;
+            cantidadcompras=0;
+        }
+
+        if (exist){
+            tittle += titleFormat.format(actual) + ".txt";
+            fl.CreateFile(tittle, content);
+
         }
     }
 
@@ -547,6 +574,22 @@ public class HelloController implements Initializable { //00073123 - Controlador
         return lastDigits;
     }
 
+    public String getFacilitador(String facilitador){
+        String newFacilitador="";
+
+        switch (facilitador){
+
+            case "visa":
+                newFacilitador="visa";
+
+            case "MasteraCard":
+                newFacilitador="MC";
+
+            case "American Express":
+                newFacilitador="AE";
+        }
+        return newFacilitador;
+    }
 
 
 }
