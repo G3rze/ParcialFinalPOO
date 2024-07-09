@@ -215,7 +215,6 @@ public class HelloController implements Initializable {
     @FXML
     void addTarjeta(ActionEvent event) {
 
-        
 
     }
 
@@ -242,15 +241,90 @@ public class HelloController implements Initializable {
     @FXML
     void deleteCliente(ActionEvent event) {
 
+        try {
+
+            String clienteID = String.valueOf(textIdCliente.getText());
+
+            if (clienteID.isEmpty()){
+                System.out.println("Tiene que digitar un ID para buscar el cliente que se busca");
+            }
+
+            for (Cliente cliente: clientes){
+
+                if (cliente.getId() == Integer.getInteger(textIdCliente.getText())){
+
+                    DBController.getDBInstance().deleteCliente(Integer.parseInt(clienteID));
+                    clientes = DBController.getDBInstance().getClientes();
+                    textIdCliente.clear();
+                }
+
+            }
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
+
     }
 
     @FXML
     void deleteCompra(ActionEvent event) {
 
+        try {
+
+            String compraID = String.valueOf(textIdCompra.getText());
+
+            if (compraID.isEmpty()){
+                System.out.println("Tiene que digitar un ID para encontrar la compra que se busca");
+            }
+
+            for (Compra compra: compras){
+
+                if (compra.getId() == Integer.getInteger(textIdCompra.getText())){
+
+                    DBController.getDBInstance().deleteCompras(Integer.parseInt(compraID));
+                    compras = DBController.getDBInstance().getCompras();
+                    textIdCompra.clear();
+                }
+
+            }
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
+
     }
 
     @FXML
     void deleteTarjeta(ActionEvent event) {
+
+        try {
+
+            String tarjetaID = String.valueOf(textIdCompra.getText());
+
+            if (tarjetaID.isEmpty()){
+                System.out.println("Tiene que digitar un ID para encontrar la tarjeta que se busca");
+            }
+
+            for (Tarjeta tarjeta: tarjetas){
+
+                if (tarjeta.getId() == Integer.getInteger(textIdTarjeta.getText())){
+
+                    DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
+                    tarjetas = DBController.getDBInstance().getTarjetas();
+                    textIdCompra.clear();
+                }
+
+            }
+
+        }catch (Exception e){
+
+            System.out.println(e);
+
+        }
 
     }
 
