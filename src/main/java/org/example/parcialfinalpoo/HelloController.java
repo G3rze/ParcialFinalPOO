@@ -14,6 +14,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,7 +36,7 @@ public class HelloController implements Initializable {
     private DatePicker Fechafinal;
 
     @FXML
-    private DatePicker Fechainico;
+    private DatePicker Fechainicio;
 
     @FXML
     private Button buttonAddCliente;
@@ -271,7 +273,16 @@ public class HelloController implements Initializable {
 
     @FXML
     void createAReport(ActionEvent event) {
+        String idcompra=textIdCompra.getText();
 
+        for(Compra compra: compras){
+
+            if(compra.getId()==Integer.parseInt(idcompra)){
+                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){
+                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta());
+                }
+            }
+        }
     }
 
     @FXML
@@ -421,7 +432,7 @@ public class HelloController implements Initializable {
                 textExpDate.clear();
                 typeToggleGroup.selectToggle(null);
                 facilitatorToggleGroup.selectToggle(null);
-                Fechainico.getValue();
+                Fechainicio.getValue();
             }
         }
     }
@@ -447,6 +458,19 @@ public class HelloController implements Initializable {
             throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta");
         }
     }
+
+
+    public Date Datepickerconvertorinicio(DatePicker fecha){ //00026223 se declara un metodo para modificar el formato de la fecha
+        LocalDate localDate =fecha.getValue(); //00026223 se captura la variable Localdate del Date Picker
+        if (localDate!=null){ //00026223 se compara si la variable tiene datos
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()); //00026223 se transforma el valor LocalDate a un valor Date
+        }
+        else{ //00026223 sino se cumple la condicion
+        return null; //00026223 se regresa el campo como nulo
+        }
+    }
+
+
 
 }
 
