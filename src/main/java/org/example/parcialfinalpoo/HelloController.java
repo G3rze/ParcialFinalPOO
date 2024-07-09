@@ -16,6 +16,9 @@ import org.example.parcialfinalpoo.Clases.Tarjeta;
 import org.example.parcialfinalpoo.DB.DBController;
 
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -165,20 +168,54 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        compras = DBController.getDBInstance().getCompras();
+
+        tarjetas = DBController.getDBInstance().getTarjetas();
+
+        clientes = DBController.getDBInstance().getClientes();
+
     }
 
     @FXML
     void addCliente(ActionEvent event) {
+
+        Cliente cliente = new Cliente(-1, textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+        DBController.getDBInstance().insertClient(cliente);
+        clientes = DBController.getDBInstance().getClientes();
 
     }
 
     @FXML
     void addCompra(ActionEvent event) {
 
+        for (Tarjeta t: tarjetas){
+
+            if (t.getId() == Integer.getInteger(textTarjetaCompra.getText())){
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                try {
+
+                    Date date = format.parse(textFechaCompra.getText());
+
+                    Compra compra = new Compra(-1, date, Double.parseDouble(textFechaCompra.getText()), textDescripcionCompra.getText(), t);
+
+                    DBController.getDBInstance().insertCompra(compra);
+                    compras = DBController.getDBInstance().getCompras();
+
+                } catch (ParseException e) {
+
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }
     }
 
     @FXML
     void addTarjeta(ActionEvent event) {
+
+        
 
     }
 
