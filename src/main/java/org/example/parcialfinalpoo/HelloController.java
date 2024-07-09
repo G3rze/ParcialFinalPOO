@@ -9,6 +9,7 @@ import org.example.parcialfinalpoo.Clases.Cliente;
 import org.example.parcialfinalpoo.Clases.Compra;
 import org.example.parcialfinalpoo.Clases.Tarjeta;
 import org.example.parcialfinalpoo.DB.DBController;
+import org.example.parcialfinalpoo.filesystem.FileSystem;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,53 +33,13 @@ public class HelloController implements Initializable {
 
     private final String[] facilitadores = {"visa", "MasterCard", "American Express"};
 
+    private final FileSystem fl = new FileSystem();
+
     @FXML
     private DatePicker Fechafinal;
 
     @FXML
     private DatePicker Fechainicio;
-
-    @FXML
-    private Button buttonAddCliente;
-
-    @FXML
-    private Button buttonAddTarjeta;
-
-    @FXML
-    private Button buttonChangeCliente;
-
-    @FXML
-    private Button buttonChangeCliente1;
-
-    @FXML
-    private Button buttonCrearCompra;
-
-    @FXML
-    private Button buttonDeleteCompra;
-
-    @FXML
-    private Button buttonDeleteTarjeta;
-
-    @FXML
-    private AnchorPane buttonEraseCliente;
-
-    @FXML
-    private Button buttonGenerarA;
-
-    @FXML
-    private Button buttonGenerarB;
-
-    @FXML
-    private Button buttonGenerarC;
-
-    @FXML
-    private Button buttonGenerarD;
-
-    @FXML
-    private Button buttonModificarCompra;
-
-    @FXML
-    private Button buttonModificarTarjeta;
 
     @FXML
     private ComboBox<String> comboFacilitadorTarjeta;
@@ -150,9 +111,6 @@ public class HelloController implements Initializable {
     private TextField textMontoCompra;
 
     @FXML
-    private Label textMontoCompra1;
-
-    @FXML
     private TextField textNombreCliente;
 
     @FXML
@@ -163,9 +121,6 @@ public class HelloController implements Initializable {
 
     @FXML
     private TextField textTel;
-
-    @FXML
-    private Label total;
 
     @FXML
     private ToggleGroup typeToggleGroup;
@@ -273,30 +228,130 @@ public class HelloController implements Initializable {
 
     @FXML
     void createAReport(ActionEvent event) {
-        String idcompra=textIdCompra.getText();
+        String content = "";
+        String title = "A-";
+        String idcompra=idClienteA.getText();
+        Date actual = new Date();
+        boolean exist = false;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
 
         for(Compra compra: compras){
 
-            if(compra.getId()==Integer.parseInt(idcompra)){
-                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){
-                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta());
+            if(compra.getTarjeta().getCliente().getId()==Integer.parseInt(idcompra)){
+                if ( (compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechainicio))) && (compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechafinal)))){
+                    content = content + ("ID: " + compra.getId() + " Fecha: " + compra.getFechaCompra() + " Descripción " + compra.getDescripcion() + " Tarjeta: " + compra.getTarjeta().getNumeroTarjeta() + "\n");
+                    exist = true;
                 }
             }
+        }
+        if(exist){
+            title += format.format(actual) + ".txt";
+            fl.CreateFile(title, content);
         }
     }
 
     @FXML
     void createBReport(ActionEvent event) {
 
+        String idCliente = idCLienteb.getText();
+        String content = "";
+        String title = "B-";
+
+        float total = 0;
+
+        boolean exist = false;
+
+        Date actual = new Date();
+        Date cDate;
+
+        SimpleDateFormat format = new SimpleDateFormat("MM-yyyy");
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+        SimpleDateFormat contentFortmat = new SimpleDateFormat("MMMM-yyyy");
+
+        try {
+            cDate = format.parse(String.valueOf(comboMes.getValue()) + "-" + textAnio.getText());
+            String cDateString = format.format(cDate);
+            for (Compra c: compras){
+
+                String cTableDate = format.format(c.getFechaCompra());
+
+                if((c.getTarjeta().getCliente().getId() == Integer.parseInt(idCliente)) && cDateString.equals(cTableDate) ){
+                    exist = true;
+                    total += (float) c.getMontoTotal();
+                }
+            }
+            if(exist){
+                for (Cliente c: clientes) {
+                    if (c.getId() == Integer.parseInt(idCliente) ) {
+                        title += titleFormat.format(actual) + ".txt";
+                        content += "El cliente " + c.getNombreCompleto() + " ha gastado $" + total + " durante el mes de " + contentFortmat.format(cDate);
+                        fl.CreateFile(title,content);
+                    }
+                }
+            }
+
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @FXML
     void createCReport(ActionEvent event) {
 
+        String header1 = "Tarjetas de crédito:";
+        String header2 = "Tarjetas de Débito:";
+        String notFound = "N/A";
+        String censored = "XXXX XXXX XXXX ";
+        String creditContent = "";
+        String debitContent = "";
+        String content = "";
+        String title = "C-";
+
+        boolean dExist = false;
+        boolean cExist = false;
+
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+
+        int idCliente = Integer.parseInt(idClienteC.getText());
+
+        for (Tarjeta t: tarjetas){
+            if(t.getCliente().getId() == idCliente){
+                if(t.getTipoTarjeta() == 'C'){
+                    creditContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
+                    cExist = true;
+                } else if (t.getTipoTarjeta() == 'D'){
+                    debitContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
+                    dExist = true;
+                }
+            }
+        }
+
+        if(cExist){
+            content += header1 + "\n" + creditContent + "\n";
+        } else {
+            content += header1 + "\n" + notFound + "\n";
+        }
+
+        if(dExist){
+            content += header2 + "\n" + debitContent + "\n";
+        } else {
+            content += header2 + "\n" + notFound + "\n";
+        }
+
+        title += titleFormat.format(new Date())  + ".txt";
+
+        fl.CreateFile(title, content);
+
     }
 
     @FXML
     void createDReport(ActionEvent event) {
+
+
 
     }
 
@@ -365,7 +420,7 @@ public class HelloController implements Initializable {
 
         try {
 
-            String tarjetaID = String.valueOf(textIdCompra.getText());
+            String tarjetaID = String.valueOf(textIdTarjeta.getText());
 
             if (tarjetaID.isEmpty()){
                 System.out.println("Tiene que digitar un ID para encontrar la tarjeta que se busca");
@@ -377,7 +432,7 @@ public class HelloController implements Initializable {
 
                     DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
                     tarjetas = DBController.getDBInstance().getTarjetas();
-                    textIdCompra.clear();
+                    textIdTarjeta.clear();
                 }
 
             }
@@ -468,6 +523,19 @@ public class HelloController implements Initializable {
         else{ //00026223 sino se cumple la condicion
         return null; //00026223 se regresa el campo como nulo
         }
+    }
+
+    public String getLastDigits(String s){
+        String lastDigits = "";
+        try {
+            for (int i = 15;i<19; i++ ){
+                lastDigits += s.charAt(i);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return lastDigits;
     }
 
 
