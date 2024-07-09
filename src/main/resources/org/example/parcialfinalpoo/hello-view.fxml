@@ -57,7 +57,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="textMontoCompra" layoutX="67.0" layoutY="48.0" text="Fecha compra:" />
+                  <Label layoutX="67.0" layoutY="48.0" text="Fecha compra:" />
                   <Label layoutX="67.0" layoutY="97.0" text="Monto total: $" />
                   <Label layoutX="73.0" layoutY="139.0" text="Descripcion:" />
                   <Label layoutX="89.0" layoutY="185.0" text="Tarjeta:" />
@@ -84,7 +84,7 @@
                   <TextField fx:id="idClienteA" layoutX="168.0" layoutY="38.0" />
                   <Label layoutX="14.0" layoutY="90.0" text="Desde:" />
                   <Label layoutX="281.0" layoutY="90.0" text="Hasta:" />
-                  <DatePicker fx:id="Fechainico" layoutX="59.0" layoutY="86.0" />
+                  <DatePicker fx:id="Fechainicio" layoutX="59.0" layoutY="86.0" />
                   <DatePicker fx:id="Fechafinal" layoutX="328.0" layoutY="86.0" />
                </children></AnchorPane>
         </content>

@@ -250,27 +250,10 @@ public class HelloController implements Initializable {
     @FXML
     void createAReport(ActionEvent event) {
 
-
-        
     }
 
     @FXML
     void createBReport(ActionEvent event) {
-
-        try {
-
-            int clienteID = Integer.parseInt(textIdCliente.getText());
-            double totalGasto = 0.0;
-
-            for (Compra compra: compras){
-                if (compra.getId() == clienteID){
-                    totalGasto += compra.getMontoTotal();
-                }
-            }
-        } catch (Exception e){
-
-            System.out.println(e);
-        }
 
     }
 
