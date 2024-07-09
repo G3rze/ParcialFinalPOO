@@ -179,6 +179,10 @@ public class HelloController implements Initializable {
     @FXML
     void addCliente(ActionEvent event) {
 
+        Cliente cliente = new Cliente(-1, textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+        DBController.getDBInstance().insertClient(cliente);
+        clientes = DBController.getDBInstance().getClientes();
+
     }
 
     @FXML
@@ -210,6 +214,8 @@ public class HelloController implements Initializable {
 
     @FXML
     void addTarjeta(ActionEvent event) {
+
+        
 
     }
 
