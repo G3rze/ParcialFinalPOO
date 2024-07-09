@@ -307,14 +307,14 @@ public class DBController {
     }
 
 
-    public String DateConverter(Date fecha){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(fecha);
+    public String DateConverter(Date fecha){ //00055623 Convierte una fecha a texto
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); //00055623 Define el formato de la fecha a texto
+        return formatter.format(fecha); //00055623 Realiza la conversión
     }
 
-    public void Close() throws SQLException {
-        con.close();
-        DBInstance = null;
+    public void Close() throws SQLException { //00055623 Cierra la conección y reinicia la instancia del DBController
+        con.close(); //00055623 Cierra la conección
+        DBInstance = null; //00055623 reinicia la instancia del DBController
     }
 
 }
