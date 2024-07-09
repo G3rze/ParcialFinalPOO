@@ -306,10 +306,8 @@ public class DBController {
         }
     }
 
-
     public String DateConverter(Date fecha){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         return formatter.format(fecha);
     }
-
 }

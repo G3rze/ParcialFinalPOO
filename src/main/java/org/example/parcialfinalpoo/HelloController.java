@@ -233,12 +233,6 @@ public class HelloController implements Initializable {
                 }
             }
         }
-
-
-        LocalDate localDatef =Fechafinal.getValue();
-
-
-
     }
 
     @FXML
