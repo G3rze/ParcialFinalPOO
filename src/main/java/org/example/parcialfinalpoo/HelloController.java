@@ -83,6 +83,7 @@ public class HelloController implements Initializable {
     @FXML
     private ComboBox<String> comboFacilitadorTarjeta;
 
+
     @FXML
     private ComboBox<Integer> comboMes;
 
@@ -272,15 +273,18 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void createAReport(ActionEvent event) {
-        String idcompra=textIdCompra.getText();
+    void createAReport(ActionEvent event) { //00026223 metodo a efectuarse cuando se use el boton para crear el reporte A
+        String idcompra=textIdCompra.getText(); //00026223 creacion de una variable String
 
-        for(Compra compra: compras){
+        for(Compra compra: compras){ //00026223 se recorre la lista de compras
 
-            if(compra.getId()==Integer.parseInt(idcompra)){
-                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){
-                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta());
+            if(compra.getId()==Integer.parseInt(idcompra)){ //00026223 se compara la id del cliente ingresado con las id de la lista
+                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){ //00026223 se evalua que la fecha de la lista que este en el rango deseado
+                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta()); //00026223 se imprime los campos de interes del reporte
                 }
+            }
+            else{
+                System.out.println("Se ingreso mal la Id"); //00026223 se marca el error de id si no se ingresa bien
             }
         }
     }
@@ -297,7 +301,18 @@ public class HelloController implements Initializable {
 
     @FXML
     void createDReport(ActionEvent event) {
+        double totalcompras=0;
+        int cantidadcompras=0;
 
+        for (Compra compra: compras){
+
+            if (compra.getTarjeta().getFacilitadorTarjeta()==comboFacilitadorTarjeta.getValue()){
+
+                System.out.println(" Cliente: "+compra.getTarjeta().getCliente());
+                totalcompras=totalcompras+compra.getMontoTotal();
+                cantidadcompras++;
+            }
+        }
     }
 
     @FXML
@@ -469,8 +484,5 @@ public class HelloController implements Initializable {
         return null; //00026223 se regresa el campo como nulo
         }
     }
-
-
-
 }
 
