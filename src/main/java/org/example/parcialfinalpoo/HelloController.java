@@ -460,13 +460,13 @@ public class HelloController implements Initializable {
     }
 
 
-    public Date Datepickerconvertorinicio(DatePicker fecha){
-        LocalDate localDate =fecha.getValue();
-        if (localDate!=null){
-            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public Date Datepickerconvertorinicio(DatePicker fecha){ //00026223 se declara un metodo para modificar el formato de la fecha
+        LocalDate localDate =fecha.getValue(); //00026223 se captura la variable Localdate del Date Picker
+        if (localDate!=null){ //00026223 se compara si la variable tiene datos
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()); //00026223 se transforma el valor LocalDate a un valor Date
         }
-        else{
-        return null;
+        else{ //00026223 sino se cumple la condicion
+        return null; //00026223 se regresa el campo como nulo
         }
     }
 
