@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable { //00073123 - Controlador de la parte gráfica que implemente una interfaz para inicializar procesos
@@ -182,6 +183,11 @@ public class HelloController implements Initializable { //00073123 - Controlador
                     DBController.getDBInstance().insertCompra(compra); //00055623 Se ingresa el objeto a la base de datos
                     compras = DBController.getDBInstance().getCompras(); //00055623 Se actualiza la lista compras con el nuevo registro en la base de datos
 
+                    idCompraM.clear(); //00026223 se liberan los campos del javafx
+                    textFechaCompra.clear(); //00026223 se liberan los campos del javafx
+                    textMontoCompra.clear(); //00026223 se liberan los campos del javafx
+                    textDescripcionCompra.clear(); //00026223 se liberan los campos del javafx
+                    textTarjetaCompra.clear(); //00026223 se liberan los campos del javafx
 
                 }catch (Exception e){ //00055623 Atraba el posible error
 
@@ -367,17 +373,20 @@ public class HelloController implements Initializable { //00073123 - Controlador
 
             for (Tarjeta t: tarjetas){ //00026223 bucle para recorrer la lista tarjetas
 
-                if (c==t.getCliente()){ //00026223 se comprara el cliente en su tabla con la llave foranea en la tabla tarjetas
+                if (c.getId()==t.getCliente().getId()){ //00026223 se comprara el cliente en su tabla con la llave foranea en la tabla tarjetas
 
-                    if (t.getFacilitadorTarjeta()==getFacilitador(comboFacilitadorTarjeta.getValue())){ //00026223 se comprara el facilitador en su tabla con la llave foranea en la tabla compras
+                    if (t.getFacilitadorTarjeta().equals(getFacilitador(comboFacilitadorTarjeta.getValue()))){ //00026223 se comprara el facilitador en su tabla con la llave foranea en la tabla compras
 
                         for (Compra compra: compras){ //00026223 bucle para recorrer la lista compras
-                            totalcompras+=compra.getMontoTotal(); //00026223 se aumenta el valor de totalcompras por cada iteracion
-                            cantidadcompras++; //00026223 contador que lleva el total de iteraciones
+                            if (compra.getTarjeta().getId() == t.getId()) { //00055623 Valida si la compra tiene la tarjeta actual
+                                totalcompras+=compra.getMontoTotal(); //00026223 se aumenta el valor de totalcompras por cada iteracion
+                                cantidadcompras++; //00026223 contador que lleva el total de iteraciones
+                            }
                         }
                         content=content+(" Cliente :"+c.getNombreCompleto()+" Total gastado: $"+totalcompras+" cantidad de compras realizadas: "+cantidadcompras+"\n"); //00026223 se almacena la informacion en un string
                         exist=true; //00026223 se inicializa en true este booleano para poder crear un archivo
                     }
+
                 }
             }
             totalcompras=0; //00026223 se reinicia el valor de la variable
@@ -582,7 +591,7 @@ public class HelloController implements Initializable { //00073123 - Controlador
             case "visa": //00026223 un case que compara el texto de facilitador
                 newFacilitador="visa"; //00026223 se quema el valor en la variable
 
-            case "MasteraCard": //00026223 un case que compara el texto de facilitador
+            case "MasterCard": //00026223 un case que compara el texto de facilitador
                 newFacilitador="MC"; //00026223 se quema el valor en la variable
 
             case "American Express": //00026223 un case que compara el texto de facilitador
