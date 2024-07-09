@@ -348,9 +348,19 @@ public class HelloController implements Initializable { //00073123 - Controlador
 
     @FXML
     void createDReport(ActionEvent event) {
+        double totalcompras=0;
+        int cantidadcompras=0;
 
 
+        for (Compra compra: compras){
 
+            if (compra.getTarjeta().getFacilitadorTarjeta()==comboFacilitadorTarjeta.getValue()){
+
+                System.out.println(" Cliente: "+compra.getTarjeta().getCliente());
+                totalcompras=totalcompras+compra.getMontoTotal();
+                cantidadcompras++;
+            }
+        }
     }
 
     @FXML
