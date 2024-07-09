@@ -57,7 +57,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="textMontoCompra" layoutX="67.0" layoutY="48.0" text="Fecha compra:" />
+                  <Label layoutX="67.0" layoutY="48.0" text="Fecha compra:" />
                   <Label layoutX="67.0" layoutY="97.0" text="Monto total: $" />
                   <Label layoutX="73.0" layoutY="139.0" text="Descripcion:" />
                   <Label layoutX="89.0" layoutY="185.0" text="Tarjeta:" />
