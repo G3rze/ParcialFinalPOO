@@ -3,12 +3,7 @@ package org.example.parcialfinalpoo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import org.example.parcialfinalpoo.Clases.Cliente;
 import org.example.parcialfinalpoo.Clases.Compra;
@@ -24,11 +19,11 @@ import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
 
-    private List<Compra> compras = DBController.getDBInstance().getCompras();
+    private List<Compra> compras;
 
-    private List<Tarjeta> tarjetas = DBController.getDBInstance().getTarjetas();
+    private List<Tarjeta> tarjetas;
 
-    private List<Cliente> clientes = DBController.getDBInstance().getClientes();
+    private List<Cliente> clientes;
 
     @FXML
     private DatePicker Fechafinal;
@@ -165,22 +160,39 @@ public class HelloController implements Initializable {
     @FXML
     private Label total;
 
+    @FXML
+    private ToggleGroup typeToggleGroup;
+
+    @FXML
+    private ToggleGroup facilitatorToggleGroup;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        typeToggleGroup = new ToggleGroup();
+        facilitatorToggleGroup = new ToggleGroup();
+
+        radioTipoDebito.setToggleGroup(typeToggleGroup);
+        radioTipoCredito.setToggleGroup(typeToggleGroup);
+
+        radioAmerican.setToggleGroup(facilitatorToggleGroup);
+        radioVisa.setToggleGroup(facilitatorToggleGroup);
+        radioMasterCard.setToggleGroup(facilitatorToggleGroup);
 
         compras = DBController.getDBInstance().getCompras();
 
         tarjetas = DBController.getDBInstance().getTarjetas();
 
         clientes = DBController.getDBInstance().getClientes();
-
     }
 
     @FXML
     void addCliente(ActionEvent event) {
 
         Cliente cliente = new Cliente(-1, textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+
         DBController.getDBInstance().insertClient(cliente);
+
         clientes = DBController.getDBInstance().getClientes();
 
     }
@@ -188,32 +200,28 @@ public class HelloController implements Initializable {
     @FXML
     void addCompra(ActionEvent event) {
 
-        for (Tarjeta t: tarjetas){
 
-            if (t.getId() == Integer.getInteger(textTarjetaCompra.getText())){
-
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-                try {
-
-                    Date date = format.parse(textFechaCompra.getText());
-
-                    Compra compra = new Compra(-1, date, Double.parseDouble(textFechaCompra.getText()), textDescripcionCompra.getText(), t);
-
-                    DBController.getDBInstance().insertCompra(compra);
-                    compras = DBController.getDBInstance().getCompras();
-
-                } catch (ParseException e) {
-
-                    throw new RuntimeException(e);
-                }
-
-            }
-        }
     }
 
     @FXML
     void addTarjeta(ActionEvent event) {
+
+        for (Cliente c: clientes) {
+            if (c.getId() == Integer.getInteger(textClienteTarjeta.getText())) {
+                SimpleDateFormat format = new SimpleDateFormat("MM-yyyy");
+
+                try {
+                    Date date = format.parse(textExpDate.getText());
+                    Tarjeta tarjeta = new Tarjeta(-1, textNumTarjeta.getText(), date, getTipoTarjeta(), getFacilitadorTarjeta(), c);
+
+                    DBController.getDBInstance().insertTarjeta(tarjeta);
+
+                    tarjetas = DBController.getDBInstance().getTarjetas();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
         
 
@@ -267,6 +275,28 @@ public class HelloController implements Initializable {
     @FXML
     void updateTarjeta(ActionEvent event) {
 
+    }
+
+    public char getTipoTarjeta() {
+        if (radioTipoCredito.isSelected()) {
+            return 'C';
+        } else if (radioTipoDebito.isSelected()) {
+            return 'D';
+        } else {
+            throw new IllegalStateException("No se ha seleccionado ningún tipo de tarjeta");
+        }
+    }
+
+    public String getFacilitadorTarjeta() {
+        if (radioVisa.isSelected()) {
+            return "Visa";
+        } else if (radioMasterCard.isSelected()) {
+            return "MasterCard";
+        } else if (radioAmerican.isSelected()){
+            return "American Express";
+        } else {
+            throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta");
+        }
     }
 
 }
