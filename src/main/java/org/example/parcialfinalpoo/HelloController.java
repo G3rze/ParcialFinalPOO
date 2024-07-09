@@ -194,6 +194,10 @@ public class HelloController implements Initializable {
         DBController.getDBInstance().insertClient(cliente);
 
         clientes = DBController.getDBInstance().getClientes();
+        idClienteM.clear();
+        textNombreCliente.clear();
+        textDireccion.clear();
+        textTel.clear();
 
     }
 
@@ -202,7 +206,7 @@ public class HelloController implements Initializable {
 
         for (Tarjeta tarjeta: tarjetas){
 
-            if (tarjeta.getId() == Integer.getInteger(textTarjetaCompra.getText())){
+            if (tarjeta.getId() == Integer.parseInt(textTarjetaCompra.getText())){
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -228,7 +232,9 @@ public class HelloController implements Initializable {
     void addTarjeta(ActionEvent event) {
 
         for (Cliente c: clientes) {
-            if (c.getId() == Integer.getInteger(textClienteTarjeta.getText())) {
+
+            if (c.getId() == Integer.parseInt(textClienteTarjeta.getText())) {
+
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                 try {
@@ -238,6 +244,13 @@ public class HelloController implements Initializable {
                     DBController.getDBInstance().insertTarjeta(tarjeta);
 
                     tarjetas = DBController.getDBInstance().getTarjetas();
+
+                    textClienteTarjeta.clear();
+                    idTarjetaM.clear();
+                    textNumTarjeta.clear();
+                    textExpDate.clear();
+                    typeToggleGroup.selectToggle(null);
+                    facilitatorToggleGroup.selectToggle(null);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -280,7 +293,7 @@ public class HelloController implements Initializable {
 
             for (Cliente cliente: clientes){
 
-                if (cliente.getId() == Integer.getInteger(textIdCliente.getText())){
+                if (cliente.getId() == Integer.parseInt(textIdCliente.getText())){
 
                     DBController.getDBInstance().deleteCliente(Integer.parseInt(clienteID));
                     clientes = DBController.getDBInstance().getClientes();
@@ -310,7 +323,7 @@ public class HelloController implements Initializable {
 
             for (Compra compra: compras){
 
-                if (compra.getId() == Integer.getInteger(textIdCompra.getText())){
+                if (compra.getId() == Integer.parseInt(textIdCompra.getText())){
 
                     DBController.getDBInstance().deleteCompras(Integer.parseInt(compraID));
                     compras = DBController.getDBInstance().getCompras();
@@ -340,7 +353,7 @@ public class HelloController implements Initializable {
 
             for (Tarjeta tarjeta: tarjetas){
 
-                if (tarjeta.getId() == Integer.getInteger(textIdTarjeta.getText())){
+                if (tarjeta.getId() == Integer.parseInt(textIdTarjeta.getText())){
 
                     DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
                     tarjetas = DBController.getDBInstance().getTarjetas();
@@ -360,16 +373,47 @@ public class HelloController implements Initializable {
     @FXML
     void updateCliente(ActionEvent event) {
 
+        DBController.getDBInstance().updateCliente(Integer.parseInt(idClienteM.getText()), textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+
+        clientes = DBController.getDBInstance().getClientes();
+
+        idClienteM.clear();
+        textNombreCliente.clear();
+        textDireccion.clear();
+        textTel.clear();
     }
 
     @FXML
     void updateCompra(ActionEvent event) {
 
+        for (Tarjeta t: tarjetas) {
+            if (t.getId() == Integer.parseInt(textTarjetaCompra.getText())) {
+                DBController.getDBInstance().updateCompra(Integer.getInteger(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText()));
+                compras = DBController.getDBInstance().getCompras();
+                idCompraM.clear();
+                textFechaCompra.clear();
+                textMontoCompra.clear();
+                textDescripcionCompra.clear();
+                textTarjetaCompra.clear();
+            }
+        }
+
     }
 
     @FXML
     void updateTarjeta(ActionEvent event) {
-
+        for (Cliente c: clientes){
+            if(c.getId() == Integer.parseInt(textClienteTarjeta.getText())){
+                DBController.getDBInstance().updateTarjeta(Integer.getInteger(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText()));
+                tarjetas = DBController.getDBInstance().getTarjetas();
+                textClienteTarjeta.clear();
+                idTarjetaM.clear();
+                textNumTarjeta.clear();
+                textExpDate.clear();
+                typeToggleGroup.selectToggle(null);
+                facilitatorToggleGroup.selectToggle(null);
+            }
+        }
     }
 
     public char getTipoTarjeta() {
@@ -388,7 +432,7 @@ public class HelloController implements Initializable {
         } else if (radioMasterCard.isSelected()) {
             return "MasterCard";
         } else if (radioAmerican.isSelected()){
-            return "American Express";
+            return "AE";
         } else {
             throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta");
         }
