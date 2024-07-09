@@ -482,48 +482,48 @@ public class HelloController implements Initializable { //00073123 - Controlador
     }
 
     @FXML
-    void updateCliente(ActionEvent event) {
+    void updateCliente(ActionEvent event) { //00026223 metodo que se hara cuando se presione el boton updateCliente
 
-        DBController.getDBInstance().updateCliente(Integer.parseInt(idClienteM.getText()), textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+        DBController.getDBInstance().updateCliente(Integer.parseInt(idClienteM.getText()), textNombreCliente.getText(), textDireccion.getText(), textTel.getText()); //00026223 se obtiene los datos por el controller
 
-        clientes = DBController.getDBInstance().getClientes();
+        clientes = DBController.getDBInstance().getClientes(); //00026223 se meten los datos en la base de datos en tabla clientes
 
-        idClienteM.clear();
-        textNombreCliente.clear();
-        textDireccion.clear();
-        textTel.clear();
+        idClienteM.clear(); //00026223 se liberan los campos del javafx
+        textNombreCliente.clear(); //00026223 se liberan los campos del javafx
+        textDireccion.clear(); //00026223 se liberan los campos del javafx
+        textTel.clear(); //00026223 se liberan los campos del javafx
     }
 
     @FXML
-    void updateCompra(ActionEvent event) {
+    void updateCompra(ActionEvent event) { //00026223 metodo que se hara cuando se presione el boton updateCompra
 
-        for (Tarjeta t: tarjetas) {
-            if (t.getId() == Integer.parseInt(textTarjetaCompra.getText())) {
-                DBController.getDBInstance().updateCompra(Integer.parseInt(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText()));
-                compras = DBController.getDBInstance().getCompras();
-                idCompraM.clear();
-                textFechaCompra.clear();
-                textMontoCompra.clear();
-                textDescripcionCompra.clear();
-                textTarjetaCompra.clear();
+        for (Tarjeta t: tarjetas) {//00026223 se recorre la lista tarjetas
+            if (t.getId() == Integer.parseInt(textTarjetaCompra.getText())) { //00026223 se comparan las id
+                DBController.getDBInstance().updateCompra(Integer.parseInt(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText())); //00026223 se obtiene los datos por el controller
+                compras = DBController.getDBInstance().getCompras(); //00026223 se meten los datos en la base de datos en tabla compras
+                idCompraM.clear(); //00026223 se liberan los campos del javafx
+                textFechaCompra.clear(); //00026223 se liberan los campos del javafx
+                textMontoCompra.clear(); //00026223 se liberan los campos del javafx
+                textDescripcionCompra.clear(); //00026223 se liberan los campos del javafx
+                textTarjetaCompra.clear(); //00026223 se liberan los campos del javafx
             }
         }
 
     }
 
     @FXML
-    void updateTarjeta(ActionEvent event) {
-        for (Cliente c: clientes){
-            if(c.getId() == Integer.parseInt(textClienteTarjeta.getText())){
-                DBController.getDBInstance().updateTarjeta(Integer.parseInt(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText()));
-                tarjetas = DBController.getDBInstance().getTarjetas();
-                textClienteTarjeta.clear();
-                idTarjetaM.clear();
-                textNumTarjeta.clear();
-                textExpDate.clear();
-                typeToggleGroup.selectToggle(null);
-                facilitatorToggleGroup.selectToggle(null);
-                Fechainicio.getValue();
+    void updateTarjeta(ActionEvent event) { //00026223 metodo que se hara cuando se presione el boton updateTarjeta
+        for (Cliente c: clientes){ //00026223 se recorre la lista clientes
+            if(c.getId() == Integer.parseInt(textClienteTarjeta.getText())){ //00026223 se comparan las id
+                DBController.getDBInstance().updateTarjeta(Integer.parseInt(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText())); //00026223 se obtiene los datos por el controller
+                tarjetas = DBController.getDBInstance().getTarjetas(); //00026223 se meten los datos en la base de datos en tabla tarjetas
+                textClienteTarjeta.clear(); //00026223 se liberan los campos del javafx
+                idTarjetaM.clear(); //00026223 se liberan los campos del javafx
+                textNumTarjeta.clear(); //00026223 se liberan los campos del javafx
+                textExpDate.clear(); //00026223 se liberan los campos del javafx
+                typeToggleGroup.selectToggle(null); //00026223 se liberan los campos del javafx
+                facilitatorToggleGroup.selectToggle(null); //00026223 se liberan los campos del javafx
+                Fechainicio.getValue(); //00026223 se liberan los campos del javafx
             }
         }
     }
@@ -574,21 +574,24 @@ public class HelloController implements Initializable { //00073123 - Controlador
         return lastDigits; //00073123 - Retorna los valores de los últimos digitos como "lastDigits"
     }
 
-    public String getFacilitador(String facilitador){
-        String newFacilitador="";
+    public String getFacilitador(String facilitador){ //00026223 declaracion del metodo
+        String newFacilitador=""; //00026223 creacion de una variable tipo String
 
-        switch (facilitador){
+        switch (facilitador){ //00026223 un switch que usara la variable facilitador
 
-            case "visa":
-                newFacilitador="visa";
+            case "visa": //00026223 un case que compara el texto de facilitador
+                newFacilitador="visa"; //00026223 se quema el valor en la variable
 
-            case "MasteraCard":
-                newFacilitador="MC";
+            case "MasteraCard": //00026223 un case que compara el texto de facilitador
+                newFacilitador="MC"; //00026223 se quema el valor en la variable
 
-            case "American Express":
-                newFacilitador="AE";
+            case "American Express": //00026223 un case que compara el texto de facilitador
+                newFacilitador="AE"; //00026223 se quema el valor en la variable
+
+            default: //00026223 si no se cumple ninguna condicion previa
+                break; //00026223 se detiene el proceso
         }
-        return newFacilitador;
+        return newFacilitador; //00026223 se retorna la variable
     }
 
 
