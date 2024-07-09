@@ -11,6 +11,7 @@ import org.example.parcialfinalpoo.Clases.Tarjeta;
 import org.example.parcialfinalpoo.DB.DBController;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -221,7 +222,7 @@ public class HelloController implements Initializable {
 
                 }catch (Exception e){
 
-                    System.out.println(e);
+                    throw new RuntimeException(e);
 
                 }
             }
@@ -388,7 +389,7 @@ public class HelloController implements Initializable {
 
         for (Tarjeta t: tarjetas) {
             if (t.getId() == Integer.parseInt(textTarjetaCompra.getText())) {
-                DBController.getDBInstance().updateCompra(Integer.getInteger(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText()));
+                DBController.getDBInstance().updateCompra(Integer.parseInt(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText()));
                 compras = DBController.getDBInstance().getCompras();
                 idCompraM.clear();
                 textFechaCompra.clear();
@@ -404,7 +405,7 @@ public class HelloController implements Initializable {
     void updateTarjeta(ActionEvent event) {
         for (Cliente c: clientes){
             if(c.getId() == Integer.parseInt(textClienteTarjeta.getText())){
-                DBController.getDBInstance().updateTarjeta(Integer.getInteger(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText()));
+                DBController.getDBInstance().updateTarjeta(Integer.parseInt(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText()));
                 tarjetas = DBController.getDBInstance().getTarjetas();
                 textClienteTarjeta.clear();
                 idTarjetaM.clear();
@@ -430,7 +431,7 @@ public class HelloController implements Initializable {
         if (radioVisa.isSelected()) {
             return "Visa";
         } else if (radioMasterCard.isSelected()) {
-            return "MasterCard";
+            return "MC";
         } else if (radioAmerican.isSelected()){
             return "AE";
         } else {
