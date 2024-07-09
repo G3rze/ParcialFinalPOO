@@ -129,65 +129,65 @@ public class HelloController implements Initializable {
     private ToggleGroup facilitatorToggleGroup;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle) { //00055623 el la primera función que corre al inicial el programa
 
-        typeToggleGroup = new ToggleGroup();
-        facilitatorToggleGroup = new ToggleGroup();
+        typeToggleGroup = new ToggleGroup(); //00055623 Crea un toggle group para manejar los tipos de tarjetas
+        facilitatorToggleGroup = new ToggleGroup(); //00055623 Crea un toggle group para manejar los facilitadores de la tarjetas
 
-        radioTipoDebito.setToggleGroup(typeToggleGroup);
-        radioTipoCredito.setToggleGroup(typeToggleGroup);
+        radioTipoDebito.setToggleGroup(typeToggleGroup); //00055623 Agrega el tipo credito al toggle group
+        radioTipoCredito.setToggleGroup(typeToggleGroup); //00055623 Agrega el tipo debito al toggle group
 
-        radioAmerican.setToggleGroup(facilitatorToggleGroup);
-        radioVisa.setToggleGroup(facilitatorToggleGroup);
-        radioMasterCard.setToggleGroup(facilitatorToggleGroup);
+        radioAmerican.setToggleGroup(facilitatorToggleGroup); //00055623 Agrega el facilitador American Express a su toggle group
+        radioVisa.setToggleGroup(facilitatorToggleGroup); //00055623 Agrega el facilitador vida a su toggle group
+        radioMasterCard.setToggleGroup(facilitatorToggleGroup); //00055623Agrega el facilitador MasterCard a su toggle group
 
-        compras = DBController.getDBInstance().getCompras();
+        compras = DBController.getDBInstance().getCompras(); //00055623 Inicializa la lista de compras con las tablas existente en la DB
 
-        tarjetas = DBController.getDBInstance().getTarjetas();
+        tarjetas = DBController.getDBInstance().getTarjetas(); //00055623 Inicializa la lista de Tarjetas con la tabla existente en la DB
 
-        clientes = DBController.getDBInstance().getClientes();
+        clientes = DBController.getDBInstance().getClientes(); //00055623 Inicializa la lista de Clientes con la tabla existente en la DB
 
-        comboMes.getItems().addAll(meses);
+        comboMes.getItems().addAll(meses); //00055623 Establece las opciones a mostrar de los meses
 
-        comboFacilitadorTarjeta.getItems().addAll(facilitadores);
+        comboFacilitadorTarjeta.getItems().addAll(facilitadores); //00055623 Establece las opciones a mostar en los facilitadores de tarjetas
     }
 
     @FXML
-    void addCliente(ActionEvent event) {
+    void addCliente(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de agregar cliente
 
-        Cliente cliente = new Cliente(-1, textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
+        Cliente cliente = new Cliente(-1, textNombreCliente.getText(), textDireccion.getText(), textTel.getText()); //00055623 se crea el nuevo cliente a ingresar
 
-        DBController.getDBInstance().insertClient(cliente);
+        DBController.getDBInstance().insertClient(cliente); //00055623 Se ingresa el nuevo cliente a la base de datos
 
-        clientes = DBController.getDBInstance().getClientes();
-        idClienteM.clear();
-        textNombreCliente.clear();
-        textDireccion.clear();
-        textTel.clear();
+        clientes = DBController.getDBInstance().getClientes(); //00055623 Se actualiza la lista clientes con los cambios hechos en la base de datos
+        idClienteM.clear(); //00055623 Se limpia el campo
+        textNombreCliente.clear(); //00055623 Se limpia el campo
+        textDireccion.clear(); //00055623 Se limpia el campo
+        textTel.clear(); //00055623 Se limpia el campo
 
     }
 
     @FXML
-    void addCompra(ActionEvent event) {
+    void addCompra(ActionEvent event) { //00055623 Funcion llamada cuando se acciona el boton de agregar compra
 
-        for (Tarjeta tarjeta: tarjetas){
+        for (Tarjeta tarjeta: tarjetas){ //00055623 Se inicia una busqueda en la lista de Tarjetas
 
-            if (tarjeta.getId() == Integer.parseInt(textTarjetaCompra.getText())){
+            if (tarjeta.getId() == Integer.parseInt(textTarjetaCompra.getText())){ //00055623 Se valida que la tarjeta ingresada exista
 
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //00055623 Se establece el formato de la fecha de compra
 
                 try {
 
-                    Date date = format.parse(textFechaCompra.getText());
-                    Compra compra = new Compra(-1, date, Double.parseDouble(textMontoCompra.getText()), textDescripcionCompra.getText(), tarjeta);
+                    Date date = format.parse(textFechaCompra.getText()); //00055623 Se crea un objeto fecha para ingresarlo al nuevo objeto compra
+                    Compra compra = new Compra(-1, date, Double.parseDouble(textMontoCompra.getText()), textDescripcionCompra.getText(), tarjeta); //00055623 Se prepara un nuevo objeto compra para ingresarlo a la base de datos
 
-                    DBController.getDBInstance().insertCompra(compra);
-                    compras = DBController.getDBInstance().getCompras();
+                    DBController.getDBInstance().insertCompra(compra); //00055623 Se ingresa el objeto a la base de datos
+                    compras = DBController.getDBInstance().getCompras(); //00055623 Se actualiza la lista compras con el nuevo registro en la base de datos
 
 
-                }catch (Exception e){
+                }catch (Exception e){ //00055623 Atraba el posible error
 
-                    throw new RuntimeException(e);
+                    throw new RuntimeException(e); //00055623 Devuelve el error
 
                 }
             }
