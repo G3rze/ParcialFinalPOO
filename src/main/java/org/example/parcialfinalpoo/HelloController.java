@@ -200,7 +200,28 @@ public class HelloController implements Initializable {
     @FXML
     void addCompra(ActionEvent event) {
 
+        for (Tarjeta tarjeta: tarjetas){
 
+            if (tarjeta.getId() == Integer.getInteger(textTarjetaCompra.getText())){
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+                try {
+
+                    Date date = format.parse(textFechaCompra.getText());
+                    Compra compra = new Compra(-1, date, Double.parseDouble(textMontoCompra.getText()), textDescripcionCompra.getText(), tarjeta);
+
+                    DBController.getDBInstance().insertCompra(compra);
+                    compras = DBController.getDBInstance().getCompras();
+
+
+                }catch (Exception e){
+
+                    System.out.println(e);
+
+                }
+            }
+        }
     }
 
     @FXML
@@ -208,7 +229,7 @@ public class HelloController implements Initializable {
 
         for (Cliente c: clientes) {
             if (c.getId() == Integer.getInteger(textClienteTarjeta.getText())) {
-                SimpleDateFormat format = new SimpleDateFormat("MM-yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                 try {
                     Date date = format.parse(textExpDate.getText());
