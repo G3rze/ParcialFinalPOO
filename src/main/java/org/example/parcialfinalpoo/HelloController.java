@@ -18,6 +18,8 @@ import org.example.parcialfinalpoo.DB.DBController;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,7 +36,7 @@ public class HelloController implements Initializable {
     private DatePicker Fechafinal;
 
     @FXML
-    private DatePicker Fechainico;
+    private DatePicker Fechainicio;
 
     @FXML
     private Button buttonAddCliente;
@@ -221,6 +223,21 @@ public class HelloController implements Initializable {
 
     @FXML
     void createAReport(ActionEvent event) {
+        String idcompra=textIdCompra.getText();
+
+        for(Compra compra: compras){
+
+            if(compra.getId()==Integer.parseInt(idcompra)){
+                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){
+                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta());
+                }
+            }
+        }
+
+
+        LocalDate localDatef =Fechafinal.getValue();
+
+
 
     }
 
@@ -268,6 +285,19 @@ public class HelloController implements Initializable {
     void updateTarjeta(ActionEvent event) {
 
     }
+
+
+    public Date Datepickerconvertorinicio(DatePicker fecha){
+        LocalDate localDate =fecha.getValue();
+        if (localDate!=null){
+            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
+        else{
+        return null;
+        }
+    }
+
+
 
 }
 
