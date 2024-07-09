@@ -115,7 +115,7 @@ public class DBController {
 
                 for(Tarjeta c: tarjetas){ //00073123 - Bucle for que itera en cada línea
 
-                    if(c.getId() == resultSet.getInt("id_cliente")){ //00073123 - Verifica si el ID de la tarjeta coincide con el ID del cliente en el ResultSet
+                    if(c.getId() == resultSet.getInt("id_tarjeta")){ //00073123 - Verifica si el ID de la tarjeta coincide con el id_tarjeta en el ResultSet
 
                         tarjeta = c; //00073123 - Asigna la Tarjeta a la variable tarjeta
                     }
@@ -123,7 +123,7 @@ public class DBController {
                 compras.add(new Compra(resultSet.getInt("id"), resultSet.getDate("fechaCompra"), resultSet.getDouble("montoTotal"), resultSet.getString("descripcion"),tarjeta)); //00073123 - Creación de objeto de tipo Compra con los datos del registro del ResultSet y la tarjeta encontrada, y lo agrega a la lista compras.
             }
 
-            getCon().close(); //00073123 - Cierra la conexión
+            Close(); //00073123 - Cierra la conexión
 
         } catch (SQLException e) { //00073123 - Inicio del bloque catch para manejar la excepciones
 
@@ -145,7 +145,7 @@ public class DBController {
 
             pStatement.execute(); //00073123 - Ejecuta la consulta select preparada con los valores especificados
 
-            getCon().close(); //00073123 - Cierra la conexión
+            Close(); //00073123 - Cierra la conexión
 
         } catch (SQLException e) { //00073123 - Inicio del bloque catch para manejar la excepciones
 
@@ -168,7 +168,7 @@ public class DBController {
 
             pStatement.execute(); //00073123 - Ejecuta la consulta select preparada con los valores especificados
 
-            getCon().close(); //00073123 - Cierra la conexión
+            Close(); //00073123 - Cierra la conexión
 
         } catch (SQLException e) { //00073123 - Inicio del bloque catch para manejar la excepciones
 
@@ -190,7 +190,7 @@ public class DBController {
 
             pStatement.execute(); //00073123 - Ejecuta la consulta select preparada con los valores especificados
 
-            getCon().close(); //00073123 - Cierra la conexión
+            Close(); //00073123 - Cierra la conexión
 
         } catch (SQLException e) { //00073123 - Inicio del bloque catch para manejar la excepciones
 
@@ -205,7 +205,7 @@ public class DBController {
 
             statement.executeUpdate("delete from Cliente where id = " + id); //00055623 se manda la query a la base de datos
 
-            getCon().close(); //00055623 cierra la conección
+            Close(); //00055623 cierra la conección
 
         } catch (SQLException e) {
             throw new RuntimeException(e); //00055623 devuelve un error del sql
@@ -219,7 +219,7 @@ public class DBController {
 
             statement.executeUpdate("delete from Tarjeta where id = " + id); //00055623 se manda la query a la base de datos
 
-            getCon().close(); //00055623 cierra la conección
+            Close(); //00055623 cierra la conección
 
         } catch (SQLException e) {
             throw new RuntimeException(e); //00055623 devuelve un error del sql
@@ -232,7 +232,7 @@ public class DBController {
 
             statement.executeUpdate("delete from Compra where id = " + id); //00055623 se manda la query a la base de datos
 
-            getCon().close(); //00055623 cierra la conección
+            Close(); //00055623 cierra la conección
 
         } catch (SQLException e) {
             throw new RuntimeException(e); //00055623 devuelve un error del sql
@@ -249,7 +249,7 @@ public class DBController {
 
             pStatement.execute(); //00026223 se ejecuta el cambio en la tabla
 
-            getCon().close(); //00026223 se cierra la conexion a la base de datos para ahorrar recursos
+            Close(); //00026223 se cierra la conexion a la base de datos para ahorrar recursos
 
         } catch (SQLException e) { //00026223 esto va a correr si no se pudo conectar a la base de datos
             throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
@@ -273,7 +273,7 @@ public class DBController {
 
                     pStatement.execute(); //00026223  se corre el modificador de campos en la tabla
 
-                    getCon().close(); //00026223 se cierra la base de datos para ahorrar recursos
+                    Close(); //00026223 se cierra la base de datos para ahorrar recursos
 
                 } catch (SQLException e) {  //00026223 esto va a correr si no se pudo conectar a la base de datos
                     throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
@@ -297,7 +297,7 @@ public class DBController {
 
                     pStatement.execute(); //00026223 se ejecuta el cambio en la tabla
 
-                    getCon().close(); //00026223 se cierra la base de datos para ahorrar recursos
+                    Close(); //00026223 se cierra la base de datos para ahorrar recursos
 
                 } catch (SQLException e) { //00026223 esto va a correr si no se pudo conectar a la base de datos
                     throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
@@ -307,9 +307,14 @@ public class DBController {
     }
 
 
-    public String DateConverter(Date fecha){
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        return formatter.format(fecha);
+    public String DateConverter(Date fecha){ //00055623 Convierte una fecha a texto
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); //00055623 Define el formato de la fecha a texto
+        return formatter.format(fecha); //00055623 Realiza la conversión
+    }
+
+    public void Close() throws SQLException { //00055623 Cierra la conección y reinicia la instancia del DBController
+        con.close(); //00055623 Cierra la conección
+        DBInstance = null; //00055623 reinicia la instancia del DBController
     }
 
 }

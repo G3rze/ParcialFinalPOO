@@ -4,14 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import org.example.parcialfinalpoo.Clases.Cliente;
 import org.example.parcialfinalpoo.Clases.Compra;
 import org.example.parcialfinalpoo.Clases.Tarjeta;
 import org.example.parcialfinalpoo.DB.DBController;
+import org.example.parcialfinalpoo.filesystem.FileSystem;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,159 +19,112 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class HelloController implements Initializable { //00073123 - Controlador de la parte gráfica que implemente una interfaz para inicializar procesos
 
-    private List<Compra> compras;
+    private List<Compra> compras; //00073123 - Lista "compras" que almacena objetos de tipo Compra
 
-    private List<Tarjeta> tarjetas;
+    private List<Tarjeta> tarjetas; //00073123 - Lista "tarjetas" que almacena objetos de tipo Tarjeta
 
-    private List<Cliente> clientes;
+    private List<Cliente> clientes; //00073123 - Lista "clientes" que almacena objetos de tipo Cliente
 
-    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12};
+    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12}; //00073123 - Arreglo tipo Integer que almacena los valores de los meses
 
-    private final String[] facilitadores = {"visa", "MasterCard", "American Express"};
+    private final String[] facilitadores = {"visa", "MasterCard", "American Express"}; //00073123 - Arreglo tipo String que almacena los valores de los faciltiadores de la tarjeta
 
-    @FXML
-    private DatePicker Fechafinal;
+    private final FileSystem fl = new FileSystem(); //00073123 - Crea una instancia de tipo FileSystem
 
-    @FXML
-    private DatePicker Fechainicio;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private DatePicker Fechafinal; //00073123 - Variable utilizada para seleccionar la fecha final en el reporte A
 
-    @FXML
-    private Button buttonAddCliente;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private DatePicker Fechainicio; //00073123 - Variable utilizada para seleccionar la fecha de inicio en el reporte A
 
-    @FXML
-    private Button buttonAddTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ComboBox<String> comboFacilitadorTarjeta; //00073123 - Variable utilizada para almacenar todos los tipos de facilitadores de tarjeta en el reporte D
 
-    @FXML
-    private Button buttonChangeCliente;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ComboBox<Integer> comboMes; //00073123 - Variable utilizada para almacenar todos los meses en el reporte B
 
-    @FXML
-    private Button buttonChangeCliente1;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idCLienteb; //00073123 - Variable en donde se coloca el ID del cliente para eliminarlo en el reporte A
 
-    @FXML
-    private Button buttonCrearCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteA; //00073123 - Variable en donde se coloca el ID del cliente para listar las compras que realizó en el reporte A
 
-    @FXML
-    private Button buttonDeleteCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteC; //00073123 - Variable en donde se coloca el ID del cliente para listar las tarjetas que tiene en el reporte C
 
-    @FXML
-    private Button buttonDeleteTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idClienteM; //00073123 - Variable en donde se coloca el ID del cliente para modificar la información del mismo
 
-    @FXML
-    private AnchorPane buttonEraseCliente;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idCompraM; //00073123 - Variable en donde se coloca el ID de la compra para modificar la información de la compra
 
-    @FXML
-    private Button buttonGenerarA;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField idTarjetaM; //00073123 - Variable en donde se coloca el ID de la tarjeta para modificar la información de la misma
 
-    @FXML
-    private Button buttonGenerarB;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioAmerican; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a American Express
 
-    @FXML
-    private Button buttonGenerarC;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioMasterCard; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a Master Card
 
-    @FXML
-    private Button buttonGenerarD;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioTipoCredito; //00073123 - Variable para almacenar el botón del tipo de la tarjeta correspondiente a Crédito
 
-    @FXML
-    private Button buttonModificarCompra;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioTipoDebito; //00073123 - Variable para almacenar el botón del tipo de la tarjeta correspondiente a Débito
 
-    @FXML
-    private Button buttonModificarTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private RadioButton radioVisa; //00073123 - Variable para almacenar el botón del facilitador de la tarjeta correspondiente a Visa
 
-    @FXML
-    private ComboBox<String> comboFacilitadorTarjeta;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textAnio; //00073123 - Variable para colocar el año en el reporte B para imprimir el dinero gastado por un cliente
 
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textClienteTarjeta; //00073123 - Variable para colocar el ID del cliente en la información de la tarjeta para añadirla
 
-    @FXML
-    private ComboBox<Integer> comboMes;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textDescripcionCompra; //00073123 - Variable para almacenar la descripción de la compra
 
-    @FXML
-    private TextField idCLienteb;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textDireccion; //00073123 - Variable para almacenar la dirección del cliente
 
-    @FXML
-    private TextField idClienteA;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textExpDate; //00073123 - Variable para almacenar la fecha de expiración de la tarjeta
 
-    @FXML
-    private TextField idClienteC;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textFechaCompra; //00073123 - Variable para almacenar la fecha de la compra
 
-    @FXML
-    private TextField idClienteM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdCliente; //00073123 - Variable para almacenar el ID del cliente a la hora de eliminarlo
 
-    @FXML
-    private TextField idCompraM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdCompra; //00073123 - Variable para almacenar el ID de la compra a la hora de eliminarla
 
-    @FXML
-    private TextField idTarjetaM;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textIdTarjeta; //00073123 - Variable para almacenar el ID de la tarjeta a la hora de eliminarla
 
-    @FXML
-    private RadioButton radioAmerican;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textMontoCompra; //00073123 - Variable para almacenar el monto de la compra
 
-    @FXML
-    private RadioButton radioMasterCard;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textNombreCliente; //00073123 - Variable para almacenar el nombre del cliente
 
-    @FXML
-    private RadioButton radioTipoCredito;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textNumTarjeta; //00073123 - Variabla para almacenar el numero de la tarjeta
 
-    @FXML
-    private RadioButton radioTipoDebito;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textTarjetaCompra; //00073123 - Variable para almacenar el tipo de tarjeta con la que se realiza la compra
 
-    @FXML
-    private RadioButton radioVisa;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private TextField textTel; //00073123 - Variable para almacenar el telefono del cliente
 
-    @FXML
-    private TextField textAnio;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ToggleGroup typeToggleGroup; //00073123 - Selecciona los raddio button que permiten escoger el tipo de la tarjeta
 
-    @FXML
-    private TextField textClienteTarjeta;
-
-    @FXML
-    private TextField textDescripcionCompra;
-
-    @FXML
-    private TextField textDireccion;
-
-    @FXML
-    private TextField textExpDate;
-
-    @FXML
-    private TextField textFechaCompra;
-
-    @FXML
-    private TextField textIdCliente;
-
-    @FXML
-    private TextField textIdCompra;
-
-    @FXML
-    private TextField textIdTarjeta;
-
-    @FXML
-    private TextField textMontoCompra;
-
-    @FXML
-    private Label textMontoCompra1;
-
-    @FXML
-    private TextField textNombreCliente;
-
-    @FXML
-    private TextField textNumTarjeta;
-
-    @FXML
-    private TextField textTarjetaCompra;
-
-    @FXML
-    private TextField textTel;
-
-    @FXML
-    private Label total;
-
-    @FXML
-    private ToggleGroup typeToggleGroup;
-
-    @FXML
-    private ToggleGroup facilitatorToggleGroup;
+    @FXML //00073123 - Anotador para marcar métodos conectados a componentes definidos en un archivo FXML
+    private ToggleGroup facilitatorToggleGroup; //00073123 - Selecciona los raddio button que permiten escoger el facilitador de la tarjeta
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -273,46 +225,132 @@ public class HelloController implements Initializable {
     }
 
     @FXML
-    void createAReport(ActionEvent event) { //00026223 metodo a efectuarse cuando se use el boton para crear el reporte A
-        String idcompra=textIdCompra.getText(); //00026223 creacion de una variable String
+    void createAReport(ActionEvent event) {
+        String content = "";
+        String title = "A-";
+        String idcompra=idClienteA.getText();
+        Date actual = new Date();
+        boolean exist = false;
 
-        for(Compra compra: compras){ //00026223 se recorre la lista de compras
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
 
-            if(compra.getId()==Integer.parseInt(idcompra)){ //00026223 se compara la id del cliente ingresado con las id de la lista
-                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){ //00026223 se evalua que la fecha de la lista que este en el rango deseado
-                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta()); //00026223 se imprime los campos de interes del reporte
+        for(Compra compra: compras){
+
+            if(compra.getTarjeta().getCliente().getId()==Integer.parseInt(idcompra)){
+                if ( (compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechainicio))) && (compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal)) || compra.getFechaCompra().equals(Datepickerconvertorinicio(Fechafinal)))){
+                    content = content + ("ID: " + compra.getId() + " Fecha: " + compra.getFechaCompra() + " Descripción " + compra.getDescripcion() + " Tarjeta: " + compra.getTarjeta().getNumeroTarjeta() + "\n");
+                    exist = true;
                 }
             }
-            else{
-                System.out.println("Se ingreso mal la Id"); //00026223 se marca el error de id si no se ingresa bien
-            }
+        }
+        if(exist){
+            title += format.format(actual) + ".txt";
+            fl.CreateFile(title, content);
         }
     }
 
     @FXML
     void createBReport(ActionEvent event) {
 
+        String idCliente = idCLienteb.getText();
+        String content = "";
+        String title = "B-";
+
+        float total = 0;
+
+        boolean exist = false;
+
+        Date actual = new Date();
+        Date cDate;
+
+        SimpleDateFormat format = new SimpleDateFormat("MM-yyyy");
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+        SimpleDateFormat contentFortmat = new SimpleDateFormat("MMMM-yyyy");
+
+        try {
+            cDate = format.parse(String.valueOf(comboMes.getValue()) + "-" + textAnio.getText());
+            String cDateString = format.format(cDate);
+            for (Compra c: compras){
+
+                String cTableDate = format.format(c.getFechaCompra());
+
+                if((c.getTarjeta().getCliente().getId() == Integer.parseInt(idCliente)) && cDateString.equals(cTableDate) ){
+                    exist = true;
+                    total += (float) c.getMontoTotal();
+                }
+            }
+            if(exist){
+                for (Cliente c: clientes) {
+                    if (c.getId() == Integer.parseInt(idCliente) ) {
+                        title += titleFormat.format(actual) + ".txt";
+                        content += "El cliente " + c.getNombreCompleto() + " ha gastado $" + total + " durante el mes de " + contentFortmat.format(cDate);
+                        fl.CreateFile(title,content);
+                    }
+                }
+            }
+
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @FXML
     void createCReport(ActionEvent event) {
 
+        String header1 = "Tarjetas de crédito:";
+        String header2 = "Tarjetas de Débito:";
+        String notFound = "N/A";
+        String censored = "XXXX XXXX XXXX ";
+        String creditContent = "";
+        String debitContent = "";
+        String content = "";
+        String title = "C-";
+
+        boolean dExist = false;
+        boolean cExist = false;
+
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+
+        int idCliente = Integer.parseInt(idClienteC.getText());
+
+        for (Tarjeta t: tarjetas){
+            if(t.getCliente().getId() == idCliente){
+                if(t.getTipoTarjeta() == 'C'){
+                    creditContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
+                    cExist = true;
+                } else if (t.getTipoTarjeta() == 'D'){
+                    debitContent += censored + getLastDigits(t.getNumeroTarjeta()) + "\n";
+                    dExist = true;
+                }
+            }
+        }
+
+        if(cExist){
+            content += header1 + "\n" + creditContent + "\n";
+        } else {
+            content += header1 + "\n" + notFound + "\n";
+        }
+
+        if(dExist){
+            content += header2 + "\n" + debitContent + "\n";
+        } else {
+            content += header2 + "\n" + notFound + "\n";
+        }
+
+        title += titleFormat.format(new Date())  + ".txt";
+
+        fl.CreateFile(title, content);
+
     }
 
     @FXML
     void createDReport(ActionEvent event) {
-        double totalcompras=0;
-        int cantidadcompras=0;
 
-        for (Compra compra: compras){
 
-            if (compra.getTarjeta().getFacilitadorTarjeta()==comboFacilitadorTarjeta.getValue()){
 
-                System.out.println(" Cliente: "+compra.getTarjeta().getCliente());
-                totalcompras=totalcompras+compra.getMontoTotal();
-                cantidadcompras++;
-            }
-        }
     }
 
     @FXML
@@ -380,7 +418,7 @@ public class HelloController implements Initializable {
 
         try {
 
-            String tarjetaID = String.valueOf(textIdCompra.getText());
+            String tarjetaID = String.valueOf(textIdTarjeta.getText());
 
             if (tarjetaID.isEmpty()){
                 System.out.println("Tiene que digitar un ID para encontrar la tarjeta que se busca");
@@ -392,7 +430,7 @@ public class HelloController implements Initializable {
 
                     DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
                     tarjetas = DBController.getDBInstance().getTarjetas();
-                    textIdCompra.clear();
+                    textIdTarjeta.clear();
                 }
 
             }
@@ -484,5 +522,21 @@ public class HelloController implements Initializable {
         return null; //00026223 se regresa el campo como nulo
         }
     }
+
+    public String getLastDigits(String s){
+        String lastDigits = "";
+        try {
+            for (int i = 15;i<19; i++ ){
+                lastDigits += s.charAt(i);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return lastDigits;
+    }
+
+
+
 }
 
