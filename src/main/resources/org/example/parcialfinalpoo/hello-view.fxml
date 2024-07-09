@@ -7,17 +7,65 @@
   <tabs>
     <Tab text="Clientes">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane fx:id="buttonEraseCliente" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="buttonAddCliente" layoutX="34.0" layoutY="159.0" mnemonicParsing="false" text="Añadir Cliente" />
+                  <Button layoutX="33.0" layoutY="315.0" mnemonicParsing="false" text="Eliminar Cliente" />
+                  <Button fx:id="buttonChangeCliente" layoutX="183.0" layoutY="159.0" mnemonicParsing="false" text="Cambiar info Cliente" />
+                  <Label layoutX="41.0" layoutY="28.0" text="Nombre cliente:" />
+                  <Label layoutX="41.0" layoutY="69.0" text="Direccion:" />
+                  <Label layoutX="41.0" layoutY="104.0" text="Telefono:" />
+                  <Label layoutX="41.0" layoutY="237.0" text="Id a borrar:" />
+                  <TextField fx:id="textNombreCliente" layoutX="164.0" layoutY="24.0" />
+                  <TextField fx:id="textDireccion" layoutX="164.0" layoutY="65.0" />
+                  <TextField fx:id="textTel" layoutX="164.0" layoutY="100.0" />
+                  <TextField fx:id="textIdCliente" layoutX="120.0" layoutY="233.0" />
+               </children></AnchorPane>
       </content>
     </Tab>
     <Tab text="Tarjetas">
       <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="textNumTarjeta" layoutX="96.0" layoutY="25.0" />
+                  <TextField fx:id="textIdTarjeta" layoutX="138.0" layoutY="262.0" />
+                  <TextField fx:id="textExpDate" layoutX="409.0" layoutY="25.0" />
+                  <TextField fx:id="textClienteTarjeta" layoutX="78.0" layoutY="149.0" />
+                  <Button fx:id="buttonAddTarjeta" layoutX="146.0" layoutY="198.0" mnemonicParsing="false" text="Añadir tarjeta" />
+                  <Button fx:id="buttonModificarTarjeta" layoutX="300.0" layoutY="198.0" mnemonicParsing="false" text="Modificar tarjeta" />
+                  <Button fx:id="buttonDeleteTarjeta" layoutX="96.0" layoutY="307.0" mnemonicParsing="false" text="Eliminar tarjeta" />
+                  <Label layoutX="30.0" layoutY="29.0" text="Numero:" />
+                  <Label layoutX="283.0" layoutY="29.0" text="Fecha expiracion:" />
+                  <Label layoutX="24.0" layoutY="94.0" text="Tipo de Tarjeta:" />
+                  <Label layoutX="283.0" layoutY="94.0" text="Facilitador:" />
+                  <Label layoutX="23.0" layoutY="153.0" text="Cliente:" />
+                  <Label layoutX="33.0" layoutY="266.0" text="Id de tarjeta:" />
+                  <RadioButton fx:id="radioTipoCredito" layoutX="138.0" layoutY="85.0" mnemonicParsing="false" text="Credito" />
+                  <RadioButton fx:id="radioTipoDebito" layoutX="138.0" layoutY="112.0" mnemonicParsing="false" text="Debito" />
+                  <RadioButton fx:id="radioVisa" layoutX="376.0" layoutY="85.0" mnemonicParsing="false" text="Visa" />
+                  <RadioButton fx:id="radioMasterCard" layoutX="376.0" layoutY="112.0" mnemonicParsing="false" text="Master Card" />
+                  <RadioButton fx:id="radioAmerican" layoutX="376.0" layoutY="140.0" mnemonicParsing="false" text="American Express" />
+               </children></AnchorPane>
       </content>
     </Tab>
       <Tab text="Compras">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="textMontoCompra" layoutX="67.0" layoutY="48.0" text="Fecha compra:" />
+                  <Label layoutX="67.0" layoutY="97.0" text="Monto total: $" />
+                  <Label layoutX="73.0" layoutY="139.0" text="Descripcion:" />
+                  <Label layoutX="89.0" layoutY="185.0" text="Tarjeta:" />
+                  <Button fx:id="buttonCrearCompra" layoutX="54.0" layoutY="229.0" mnemonicParsing="false" text="Crear compra" />
+                  <Button fx:id="buttonModificarCompra" layoutX="202.0" layoutY="229.0" mnemonicParsing="false" text="Modificar compra" />
+                  <Button fx:id="buttonDeleteCompra" layoutX="375.0" layoutY="294.0" mnemonicParsing="false" text="Eliminar compra" />
+                  <Label layoutX="47.0" layoutY="298.0" text="Id compra:" />
+                  <TextField fx:id="textFechaCompra" layoutX="167.0" layoutY="44.0" />
+                  <TextField fx:id="textMontoCompra" layoutX="167.0" layoutY="93.0" />
+                  <TextField fx:id="textDescripcionCompra" layoutX="167.0" layoutY="135.0" />
+                  <TextField fx:id="textTarjetaCompra" layoutX="167.0" layoutY="181.0" />
+                  <TextField fx:id="textIdCompra" layoutX="167.0" layoutY="294.0" />
+               </children></AnchorPane>
         </content>
       </Tab>
       <Tab text="Reporte A">
