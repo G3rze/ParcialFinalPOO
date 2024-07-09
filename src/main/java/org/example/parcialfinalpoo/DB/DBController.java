@@ -275,6 +275,7 @@ public class DBController {
 
                     Close(); //00026223 se cierra la base de datos para ahorrar recursos
 
+
                 } catch (SQLException e) {  //00026223 esto va a correr si no se pudo conectar a la base de datos
                     throw new RuntimeException(e); //00026223 se tira una excepcion por no poder conectarse
                 }

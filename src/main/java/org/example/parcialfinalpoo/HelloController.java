@@ -26,6 +26,10 @@ public class HelloController implements Initializable {
 
     private List<Cliente> clientes;
 
+    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12};
+
+    private final String[] facilitadores = {"visa", "MasterCard", "American Express"};
+
     @FXML
     private DatePicker Fechafinal;
 
@@ -185,6 +189,10 @@ public class HelloController implements Initializable {
         tarjetas = DBController.getDBInstance().getTarjetas();
 
         clientes = DBController.getDBInstance().getClientes();
+
+        comboMes.getItems().addAll(meses);
+
+        comboFacilitadorTarjeta.getItems().addAll(facilitadores);
     }
 
     @FXML
@@ -413,6 +421,7 @@ public class HelloController implements Initializable {
                 textExpDate.clear();
                 typeToggleGroup.selectToggle(null);
                 facilitatorToggleGroup.selectToggle(null);
+                Fechainico.getValue();
             }
         }
     }
