@@ -11,11 +11,8 @@ import org.example.parcialfinalpoo.Clases.Tarjeta;
 import org.example.parcialfinalpoo.DB.DBController;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,15 +25,11 @@ public class HelloController implements Initializable {
 
     private List<Cliente> clientes;
 
-    private final Integer[] meses = {1,2,3,4,5,6,7,8,9,10,11,12};
-
-    private final String[] facilitadores = {"visa", "MasterCard", "American Express"};
-
     @FXML
     private DatePicker Fechafinal;
 
     @FXML
-    private DatePicker Fechainicio;
+    private DatePicker Fechainico;
 
     @FXML
     private Button buttonAddCliente;
@@ -191,10 +184,6 @@ public class HelloController implements Initializable {
         tarjetas = DBController.getDBInstance().getTarjetas();
 
         clientes = DBController.getDBInstance().getClientes();
-
-        comboMes.getItems().addAll(meses);
-
-        comboFacilitadorTarjeta.getItems().addAll(facilitadores);
     }
 
     @FXML
@@ -205,10 +194,6 @@ public class HelloController implements Initializable {
         DBController.getDBInstance().insertClient(cliente);
 
         clientes = DBController.getDBInstance().getClientes();
-        idClienteM.clear();
-        textNombreCliente.clear();
-        textDireccion.clear();
-        textTel.clear();
 
     }
 
@@ -217,7 +202,7 @@ public class HelloController implements Initializable {
 
         for (Tarjeta tarjeta: tarjetas){
 
-            if (tarjeta.getId() == Integer.parseInt(textTarjetaCompra.getText())){
+            if (tarjeta.getId() == Integer.getInteger(textTarjetaCompra.getText())){
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -232,7 +217,7 @@ public class HelloController implements Initializable {
 
                 }catch (Exception e){
 
-                    throw new RuntimeException(e);
+                    System.out.println(e);
 
                 }
             }
@@ -243,9 +228,7 @@ public class HelloController implements Initializable {
     void addTarjeta(ActionEvent event) {
 
         for (Cliente c: clientes) {
-
-            if (c.getId() == Integer.parseInt(textClienteTarjeta.getText())) {
-
+            if (c.getId() == Integer.getInteger(textClienteTarjeta.getText())) {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
                 try {
@@ -255,13 +238,6 @@ public class HelloController implements Initializable {
                     DBController.getDBInstance().insertTarjeta(tarjeta);
 
                     tarjetas = DBController.getDBInstance().getTarjetas();
-
-                    textClienteTarjeta.clear();
-                    idTarjetaM.clear();
-                    textNumTarjeta.clear();
-                    textExpDate.clear();
-                    typeToggleGroup.selectToggle(null);
-                    facilitatorToggleGroup.selectToggle(null);
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
@@ -273,16 +249,7 @@ public class HelloController implements Initializable {
 
     @FXML
     void createAReport(ActionEvent event) {
-        String idcompra=textIdCompra.getText();
 
-        for(Compra compra: compras){
-
-            if(compra.getId()==Integer.parseInt(idcompra)){
-                if ( compra.getFechaCompra().after(Datepickerconvertorinicio(Fechainicio)) && compra.getFechaCompra().before(Datepickerconvertorinicio(Fechafinal))){
-                    System.out.println("ID: "+compra.getId()+" Fecha: "+compra.getFechaCompra()+" Descripción "+compra.getDescripcion()+" Tarjeta: "+compra.getTarjeta());
-                }
-            }
-        }
     }
 
     @FXML
@@ -297,8 +264,6 @@ public class HelloController implements Initializable {
 
     @FXML
     void createDReport(ActionEvent event) {
-
-
 
     }
 
@@ -315,7 +280,7 @@ public class HelloController implements Initializable {
 
             for (Cliente cliente: clientes){
 
-                if (cliente.getId() == Integer.parseInt(textIdCliente.getText())){
+                if (cliente.getId() == Integer.getInteger(textIdCliente.getText())){
 
                     DBController.getDBInstance().deleteCliente(Integer.parseInt(clienteID));
                     clientes = DBController.getDBInstance().getClientes();
@@ -345,7 +310,7 @@ public class HelloController implements Initializable {
 
             for (Compra compra: compras){
 
-                if (compra.getId() == Integer.parseInt(textIdCompra.getText())){
+                if (compra.getId() == Integer.getInteger(textIdCompra.getText())){
 
                     DBController.getDBInstance().deleteCompras(Integer.parseInt(compraID));
                     compras = DBController.getDBInstance().getCompras();
@@ -375,7 +340,7 @@ public class HelloController implements Initializable {
 
             for (Tarjeta tarjeta: tarjetas){
 
-                if (tarjeta.getId() == Integer.parseInt(textIdTarjeta.getText())){
+                if (tarjeta.getId() == Integer.getInteger(textIdTarjeta.getText())){
 
                     DBController.getDBInstance().deleteTarjeta(Integer.parseInt(tarjetaID));
                     tarjetas = DBController.getDBInstance().getTarjetas();
@@ -395,48 +360,16 @@ public class HelloController implements Initializable {
     @FXML
     void updateCliente(ActionEvent event) {
 
-        DBController.getDBInstance().updateCliente(Integer.parseInt(idClienteM.getText()), textNombreCliente.getText(), textDireccion.getText(), textTel.getText());
-
-        clientes = DBController.getDBInstance().getClientes();
-
-        idClienteM.clear();
-        textNombreCliente.clear();
-        textDireccion.clear();
-        textTel.clear();
     }
 
     @FXML
     void updateCompra(ActionEvent event) {
 
-        for (Tarjeta t: tarjetas) {
-            if (t.getId() == Integer.parseInt(textTarjetaCompra.getText())) {
-                DBController.getDBInstance().updateCompra(Integer.parseInt(idCompraM.getText()), textFechaCompra.getText(), textMontoCompra.getText(), textDescripcionCompra.getText(), Integer.parseInt(textTarjetaCompra.getText()));
-                compras = DBController.getDBInstance().getCompras();
-                idCompraM.clear();
-                textFechaCompra.clear();
-                textMontoCompra.clear();
-                textDescripcionCompra.clear();
-                textTarjetaCompra.clear();
-            }
-        }
-
     }
 
     @FXML
     void updateTarjeta(ActionEvent event) {
-        for (Cliente c: clientes){
-            if(c.getId() == Integer.parseInt(textClienteTarjeta.getText())){
-                DBController.getDBInstance().updateTarjeta(Integer.parseInt(idTarjetaM.getText()),textNumTarjeta.getText(), textExpDate.getText(), getTipoTarjeta(), getFacilitadorTarjeta(), Integer.parseInt(textClienteTarjeta.getText()));
-                tarjetas = DBController.getDBInstance().getTarjetas();
-                textClienteTarjeta.clear();
-                idTarjetaM.clear();
-                textNumTarjeta.clear();
-                textExpDate.clear();
-                typeToggleGroup.selectToggle(null);
-                facilitatorToggleGroup.selectToggle(null);
-                Fechainicio.getValue();
-            }
-        }
+
     }
 
     public char getTipoTarjeta() {
@@ -453,22 +386,11 @@ public class HelloController implements Initializable {
         if (radioVisa.isSelected()) {
             return "Visa";
         } else if (radioMasterCard.isSelected()) {
-            return "MC";
+            return "MasterCard";
         } else if (radioAmerican.isSelected()){
-            return "AE";
+            return "American Express";
         } else {
             throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta");
-        }
-    }
-
-
-    public Date Datepickerconvertorinicio(DatePicker fecha){
-        LocalDate localDate =fecha.getValue();
-        if (localDate!=null){
-            return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        }
-        else{
-        return null;
         }
     }
 
