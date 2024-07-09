@@ -501,25 +501,25 @@ public class HelloController implements Initializable { //00073123 - Controlador
         }
     }
 
-    public char getTipoTarjeta() {
-        if (radioTipoCredito.isSelected()) {
-            return 'C';
-        } else if (radioTipoDebito.isSelected()) {
-            return 'D';
-        } else {
-            throw new IllegalStateException("No se ha seleccionado ningún tipo de tarjeta");
+    public char getTipoTarjeta() { //00073123 - Función para saber el tipo de tarjeta que se usará
+        if (radioTipoCredito.isSelected()) { //00073123 - Condición que indica que si se selecciona "radioTipoCredito" será una tarjeta de crédito
+            return 'C'; //00073123 - Retorna 'C' que es igual a "Crédito"
+        } else if (radioTipoDebito.isSelected()) { //00073123 - Condición que indica que si se selecciona "radioTipoDebito" será una tarjeta de débito
+            return 'D'; //00073123 - Retorna 'D' que es igual a "Débito"
+        } else { //00073123 - Continuación del if si ninguna de las condiciones anteriores se cumple
+            throw new IllegalStateException("No se ha seleccionado ningún tipo de tarjeta"); //00073123 - Si ninguna condición se cumple lanzará la excepción indicando que no se seleccionó ningún tipo de tarjeta
         }
     }
 
-    public String getFacilitadorTarjeta() {
-        if (radioVisa.isSelected()) {
-            return "Visa";
-        } else if (radioMasterCard.isSelected()) {
-            return "MC";
-        } else if (radioAmerican.isSelected()){
-            return "AE";
-        } else {
-            throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta");
+    public String getFacilitadorTarjeta() { //00073123 - Función para saber el facilitador de la tarjeta que se usará
+        if (radioVisa.isSelected()) { //00073123 - Condición que indica que si se selecciona "radioVisa" será Visa
+            return "Visa"; //00073123 - Retorna 'Visa' que es igual a "Visa"
+        } else if (radioMasterCard.isSelected()) { //00073123 - Condición que indica que si se selecciona "radioMasterCard" será Master Card
+            return "MC"; //00073123 - Retorna 'MC' que es igual a "Master Card"
+        } else if (radioAmerican.isSelected()){//00073123 - Condición que indica que si se selecciona "radioAmerican" será American Express
+            return "AE"; //00073123 - Retorna 'AE' que es igual a "American Express"
+        } else { //00073123 - Continuación del if si ninguna de las condiciones anteriores se cumple
+            throw new IllegalStateException("No se ha seleccionado ningún facilitador de tarjeta"); //00073123 - Si ninguna condición se cumple lanzará la excepción indicando que no se seleccionó ningún faciltador
         }
     }
 
@@ -534,17 +534,17 @@ public class HelloController implements Initializable { //00073123 - Controlador
         }
     }
 
-    public String getLastDigits(String s){
-        String lastDigits = "";
-        try {
-            for (int i = 15;i<19; i++ ){
-                lastDigits += s.charAt(i);
+    public String getLastDigits(String s){ //00073123 - Función que selecciona los últimos digitos de la tarjeta, usados para el reporte C
+        String lastDigits = ""; //00073123 - Inicializa una cadena vacía para almacenar los últimos dígitos
+        try { //00073123 - Inicio del manejo de errores con try catch
+            for (int i = 15;i<19; i++ ){ //00073123 - Ciclo for que recorre los lugares desde el 15 al 18 de los números de la tarjeta
+                lastDigits += s.charAt(i); //00073123 - Añade el carácter en la posición i de la cadena s a la variable lastDigits
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) { //En caso de error hay una excepción
+            throw new RuntimeException(e); //00073123 - Lanza la excepción "RuntimeException"
         }
 
-        return lastDigits;
+        return lastDigits; //00073123 - Retorna los valores de los últimos digitos como "lastDigits"
     }
 
 
