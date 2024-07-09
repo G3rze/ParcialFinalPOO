@@ -348,19 +348,46 @@ public class HelloController implements Initializable { //00073123 - Controlador
     }
 
     @FXML
-    void createDReport(ActionEvent event) {
-        double totalcompras=0;
-        int cantidadcompras=0;
+    void createDReport(ActionEvent event) { //00026223 metodo se hará al apretar el botón de crear reporte D
+        double totalcompras=0; //00026223 declaracion de variable
 
+        Date actual = new Date(); //00026223 creacion de un objeto tipo Date
 
-        for (Compra compra: compras){
+        int cantidadcompras=0; //00026223 declaracion de variable
 
-            if (compra.getTarjeta().getFacilitadorTarjeta()==comboFacilitadorTarjeta.getValue()){
+        String cliente =""; //00026223 declaracion de variable
+        String tittle = "D-"; //00026223 declaracion de variable
+        String content= ""; //00026223 declaracion de variable
 
-                System.out.println(" Cliente: "+compra.getTarjeta().getCliente());
-                totalcompras=totalcompras+compra.getMontoTotal();
-                cantidadcompras++;
+        SimpleDateFormat titleFormat = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss"); //00026223 creacion de in objeto tipo simpledateformat que tiene ya establecido el orden de los datos
+
+        boolean exist = false; //00026223 inicializacion de variable
+
+        for (Cliente c: clientes){ //00026223 bucle para recorrer la lista clientes
+
+            for (Tarjeta t: tarjetas){ //00026223 bucle para recorrer la lista tarjetas
+
+                if (c==t.getCliente()){ //00026223 se comprara el cliente en su tabla con la llave foranea en la tabla tarjetas
+
+                    if (t.getFacilitadorTarjeta()==getFacilitador(comboFacilitadorTarjeta.getValue())){ //00026223 se comprara el facilitador en su tabla con la llave foranea en la tabla compras
+
+                        for (Compra compra: compras){ //00026223 bucle para recorrer la lista compras
+                            totalcompras+=compra.getMontoTotal(); //00026223 se aumenta el valor de totalcompras por cada iteracion
+                            cantidadcompras++; //00026223 contador que lleva el total de iteraciones
+                        }
+                        content=content+(" Cliente :"+c.getNombreCompleto()+" Total gastado: $"+totalcompras+" cantidad de compras realizadas: "+cantidadcompras+"\n"); //00026223 se almacena la informacion en un string
+                        exist=true; //00026223 se inicializa en true este booleano para poder crear un archivo
+                    }
+                }
             }
+            totalcompras=0; //00026223 se reinicia el valor de la variable
+            cantidadcompras=0; //00026223 se reinicia el valor de la variable
+        }
+
+        if (exist){ //00026223 cuando existe sea verdadero se va a ejecutar esto
+            tittle += titleFormat.format(actual) + ".txt"; //00026223 se añade la fecha al titulo quemado D
+            fl.CreateFile(tittle, content); //00026223 se escribe el txt con ese formato titulo y contenido
+
         }
     }
 
@@ -547,6 +574,22 @@ public class HelloController implements Initializable { //00073123 - Controlador
         return lastDigits; //00073123 - Retorna los valores de los últimos digitos como "lastDigits"
     }
 
+    public String getFacilitador(String facilitador){
+        String newFacilitador="";
+
+        switch (facilitador){
+
+            case "visa":
+                newFacilitador="visa";
+
+            case "MasteraCard":
+                newFacilitador="MC";
+
+            case "American Express":
+                newFacilitador="AE";
+        }
+        return newFacilitador;
+    }
 
 
 }
