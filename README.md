@@ -1,6 +1,6 @@
 Para usarse la base de datos se necesita una clase "Credentials" en la ruta src/main/java/org/example/parcialfinalpoo/DB para usarse, a continuación dejo un sample code para su creación
 
-package org.example.parcialfinalpoo.DB;
+    package org.example.parcialfinalpoo.DB;
 
     public class Credentials {
         private String username  = "USER";
