@@ -370,24 +370,23 @@ public class HelloController implements Initializable { //00073123 - Controlador
         boolean exist = false; //00026223 inicializacion de variable
 
         for (Cliente c: clientes){ //00026223 bucle para recorrer la lista clientes
-
             for (Tarjeta t: tarjetas){ //00026223 bucle para recorrer la lista tarjetas
 
                 if (c.getId()==t.getCliente().getId()){ //00026223 se comprara el cliente en su tabla con la llave foranea en la tabla tarjetas
 
-                    if (t.getFacilitadorTarjeta().equals(getFacilitador(comboFacilitadorTarjeta.getValue()))){ //00026223 se comprara el facilitador en su tabla con la llave foranea en la tabla compras
+                    for (Compra compra: compras){ //00026223 bucle para recorrer la lista compras
+                        if (compra.getTarjeta().getId() == t.getId() && t.getFacilitadorTarjeta().equals(getFacilitador(comboFacilitadorTarjeta.getValue()))) { //00055623 Valida si la compra tiene la tarjeta actual
+                            totalcompras+=compra.getMontoTotal(); //00026223 se aumenta el valor de totalcompras por cada iteracion
+                            cantidadcompras++; //00026223 contador que lleva el total de iteraciones
+                            exist=true; //00026223 se inicializa en true este booleano para poder crear un archivo
 
-                        for (Compra compra: compras){ //00026223 bucle para recorrer la lista compras
-                            if (compra.getTarjeta().getId() == t.getId()) { //00055623 Valida si la compra tiene la tarjeta actual
-                                totalcompras+=compra.getMontoTotal(); //00026223 se aumenta el valor de totalcompras por cada iteracion
-                                cantidadcompras++; //00026223 contador que lleva el total de iteraciones
-                            }
                         }
-                        content=content+(" Cliente :"+c.getNombreCompleto()+" Total gastado: $"+totalcompras+" cantidad de compras realizadas: "+cantidadcompras+"\n"); //00026223 se almacena la informacion en un string
-                        exist=true; //00026223 se inicializa en true este booleano para poder crear un archivo
                     }
 
                 }
+            }
+            if(cantidadcompras>=1){
+                content += " Cliente :" + c.getNombreCompleto() + " Total gastado: $" + totalcompras+" cantidad de compras realizadas: "+ cantidadcompras +"\n"; //00026223 se almacena la informacion en un string
             }
             totalcompras=0; //00026223 se reinicia el valor de la variable
             cantidadcompras=0; //00026223 se reinicia el valor de la variable
@@ -584,23 +583,23 @@ public class HelloController implements Initializable { //00073123 - Controlador
     }
 
     public String getFacilitador(String facilitador){ //00026223 declaracion del metodo
-        String newFacilitador=""; //00026223 creacion de una variable tipo String
 
         switch (facilitador){ //00026223 un switch que usara la variable facilitador
 
             case "visa": //00026223 un case que compara el texto de facilitador
-                newFacilitador="visa"; //00026223 se quema el valor en la variable
+                return "Visa"; //00026223 se quema el valor en la variable
 
             case "MasterCard": //00026223 un case que compara el texto de facilitador
-                newFacilitador="MC"; //00026223 se quema el valor en la variable
+                return "MC"; //00026223 se quema el valor en la variable
 
             case "American Express": //00026223 un case que compara el texto de facilitador
-                newFacilitador="AE"; //00026223 se quema el valor en la variable
+                return "AE"; //00026223 se quema el valor en la variable
 
             default: //00026223 si no se cumple ninguna condicion previa
                 break; //00026223 se detiene el proceso
         }
-        return newFacilitador; //00026223 se retorna la variable
+        return null;
+
     }
 
 
